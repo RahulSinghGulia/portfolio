@@ -1,7 +1,5 @@
-# Portfolio
+### Portfolio: https://rahulsinghgulia.github.io/portfolio/
 
-https://rahulsinghgulia.github.io/portfolio/
-
-AT&T Project: https://rahulsinghgulia.github.io/portfolio/AT&T/
+### AT&T Project: https://rahulsinghgulia.github.io/portfolio/AT&T/
 
 
