@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Wi-Fi & 5G Coexistence Planner</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Placeholder comments as required -->
+    <!-- Chosen Palette: Warm Neutrals (Slate, with Blue/Red accents) -->
+    <!-- Application Structure Plan: A single-page, narrative-scrolling application. Starts with an introduction to the concepts (RSSI vs. SINR), followed by a core interactive simulation section with user controls and dynamic visualizations (User Association Map, SINR Heatmaps). It then visually explains the user association logic, and concludes by connecting the simulation to the advanced Evo-WISVA concept. This structure was chosen to guide the user from basic understanding to hands-on exploration and finally to future potential, creating a more engaging and educational experience than a simple dashboard. -->
+    <!-- Visualization & Content Choices: [ User Association: Goal is to show relationships and distribution. Method is an interactive scatter plot using Chart.js on a Canvas, chosen for its performance and interactivity (tooltips). SINR Coverage: Goal is to compare spatial signal quality. Method is a custom-drawn heatmap on a Canvas element, chosen for its lightweight nature and full control over rendering, avoiding heavier libraries like Plotly. Association Logic: Goal is to organize and explain a process. Method is a flowchart-style diagram using styled HTML (divs with Tailwind), chosen for its simplicity and clarity. Evo-WISVA benefits: Goal is to inform. Method is a card-based layout, chosen for its scannable and visually organized presentation of key points. ] -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 50vh;
+            max-height: 500px;
+        }
+        .heatmap-container {
+             position: relative;
+             width: 100%;
+             padding-bottom: 100%; /* 1:1 Aspect Ratio */
+             height: 0;
+        }
+        .heatmap-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 5px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #3b82f6; /* blue-500 */
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #3b82f6; /* blue-500 */
+            cursor: pointer;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
+            <h1 class="text-3xl sm:text-4xl font-bold text-slate-900">📶 Interactive Wi-Fi & 5G Coexistence Planner</h1>
+            <p class="mt-2 text-lg text-slate-600">An explorable simulation of wireless network planning and optimization.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        <!-- Section 1: The Scenario & Key Concepts -->
+        <section id="concepts" class="mb-16">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4 text-center">The Challenge: A Converged World</h2>
+            <div class="max-w-4xl mx-auto text-center text-slate-600 space-y-4">
+                <p>In modern wireless environments, users are often within range of both Wi-Fi and cellular (5G) networks. To deliver the best experience, a device must intelligently choose which network to connect to. This decision isn't just about who has the "strongest" signal (RSSI), but who provides the best *quality* signal (SINR), which accounts for interference from other sources.</p>
+                <p>This interactive report simulates this complex environment, allowing you to explore the factors that influence user connectivity and network performance.</p>
+            </div>
+        </section>
+        
+        <!-- Section 2: The Interactive Simulation -->
+        <section id="simulation" class="bg-white p-4 sm:p-8 rounded-2xl shadow-lg">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Controls Panel -->
+                <aside class="lg:col-span-1 space-y-6">
+                    <h3 class="text-xl font-bold text-slate-800 border-b pb-2">Simulation Controls</h3>
+                    
+                    <div>
+                        <label for="aps" class="slider-label"><span>Wi-Fi APs</span><span id="aps-value" class="font-semibold text-blue-600">4</span></label>
+                        <input type="range" id="aps" name="aps" min="1" max="10" value="4">
+                    </div>
+                    <div>
+                        <label for="cells" class="slider-label"><span>5G Cells</span><span id="cells-value" class="font-semibold text-red-600">2</span></label>
+                        <input type="range" id="cells" name="cells" min="1" max="5" value="2">
+                    </div>
+                    <div>
+                        <label for="users" class="slider-label"><span>Number of Users</span><span id="users-value" class="font-semibold text-slate-600">50</span></label>
+                        <input type="range" id="users" name="users" min="10" max="200" value="50">
+                    </div>
+                    
+                    <h4 class="text-lg font-semibold text-slate-700 pt-4 border-t">Association Logic</h4>
+                    <div>
+                        <label for="sinr_threshold_wifi" class="slider-label"><span>Min Wi-Fi SINR (dB)</span><span id="sinr_threshold_wifi-value" class="font-semibold text-blue-600">10</span></label>
+                        <input type="range" id="sinr_threshold_wifi" name="sinr_threshold_wifi" min="0" max="20" value="10">
+                    </div>
+                     <div>
+                        <label for="sinr_threshold_5g" class="slider-label"><span>Min 5G SINR (dB)</span><span id="sinr_threshold_5g-value" class="font-semibold text-red-600">5</span></label>
+                        <input type="range" id="sinr_threshold_5g" name="sinr_threshold_5g" min="0" max="20" value="5">
+                    </div>
+                </aside>
+
+                <!-- Visualization Area -->
+                <div class="lg:col-span-2">
+                    <div id="summary" class="flex justify-center gap-6 sm:gap-12 mb-6 text-center">
+                        <div>
+                            <p class="text-3xl font-bold text-blue-600" id="wifi-user-count">0</p>
+                            <p class="text-sm text-slate-500">Users on Wi-Fi</p>
+                        </div>
+                         <div>
+                            <p class="text-3xl font-bold text-red-600" id="5g-user-count">0</p>
+                            <p class="text-sm text-slate-500">Users on 5G</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="userAssociationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SINR Heatmaps -->
+            <div class="mt-12">
+                <h3 class="text-xl font-bold text-slate-800 text-center mb-4">SINR Coverage Heatmaps</h3>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <h4 class="font-semibold mb-2">Wi-Fi SINR</h4>
+                        <div class="heatmap-container mx-auto max-w-sm">
+                            <canvas id="wifiHeatmap" class="heatmap-canvas rounded-lg shadow-md"></canvas>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="font-semibold mb-2">5G SINR</h4>
+                        <div class="heatmap-container mx-auto max-w-sm">
+                            <canvas id="5gHeatmap" class="heatmap-canvas rounded-lg shadow-md"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: User Association Logic Explained -->
+        <section id="logic" class="my-16">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 text-center">How Do Users Choose a Network?</h2>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+                <!-- Step 1 -->
+                <div class="flex flex-col items-center text-center p-4">
+                    <div class="bg-blue-100 text-blue-800 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mb-3">1</div>
+                    <h4 class="font-semibold mb-2">Check Wi-Fi Quality</h4>
+                    <p class="text-sm text-slate-600">Is the Wi-Fi SINR above its minimum threshold? If yes, it's a candidate for connection.</p>
+                </div>
+                <!-- Arrow -->
+                <div class="hidden md:flex items-center justify-center h-full">
+                    <span class="text-3xl text-slate-400">&rarr;</span>
+                </div>
+                <!-- Step 2 -->
+                <div class="flex flex-col items-center text-center p-4">
+                    <div class="bg-slate-100 text-slate-800 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mb-3">2</div>
+                    <h4 class="font-semibold mb-2">Compare & Prefer</h4>
+                    <p class="text-sm text-slate-600">If Wi-Fi is good, is it also better than 5G? If so, the user connects to Wi-Fi. It's a "Wi-Fi First" strategy when quality is high.</p>
+                </div>
+                <!-- Arrow -->
+                <div class="hidden md:flex items-center justify-center h-full">
+                     <span class="text-3xl text-slate-400">&rarr;</span>
+                </div>
+                 <!-- Step 3 -->
+                <div class="flex flex-col items-center text-center p-4">
+                    <div class="bg-red-100 text-red-800 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mb-3">3</div>
+                    <h4 class="font-semibold mb-2">Fallback to 5G</h4>
+                    <p class="text-sm text-slate-600">If Wi-Fi isn't chosen, is the 5G signal quality above its threshold? If yes, connect to 5G. It acts as the reliable fallback.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 4: Beyond the Simulation -->
+        <section id="future" class="bg-slate-100 rounded-2xl p-8 sm:p-12">
+            <h2 class="text-2xl font-bold text-slate-800 mb-2 text-center">Beyond Simulation: The Evo-WISVA Advantage</h2>
+            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-8">This simulation uses a standard path loss model. My PhD research on the **Evo-WISVA framework** elevates this concept to a new level using AI, enabling truly predictive and proactive network management.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h4 class="font-bold text-slate-900 mb-2">Physics-Informed AI</h4>
+                    <p class="text-sm text-slate-600">Models complex, real-world RF propagation, accounting for dynamic obstacles like moving crowds, not just distance.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h4 class="font-bold text-slate-900 mb-2">108x Faster Prediction</h4>
+                    <p class="text-sm text-slate-600">Achieves real-time SINR prediction, making proactive network adjustments feasible during live events.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h4 class="font-bold text-slate-900 mb-2">Predictive Digital Twins</h4>
+                    <p class="text-sm text-slate-600">Creates a living model of the network that can forecast future conditions, not just analyze the present.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h4 class="font-bold text-slate-900 mb-2">AI-Driven Optimization</h4>
+                    <p class="text-sm text-slate-600">Moves beyond simple rules to intelligent, adaptive decision-making for maximizing network performance.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-16 border-t">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-slate-500 text-sm">
+            <p>&copy; 2025 Rahul Gulia. This interactive application is a demonstration of wireless network simulation concepts.</p>
+        </div>
+    </footer>
+
+    <script>
+        const config = {
+            areaSize: [100, 100],
+            txPowerWifi: 20,
+            txPower5g: 30,
+            noiseFloorWifi: -95,
+            noiseFloor5g: -100,
+            pathLossExpWifi: 3.5,
+            pathLossExp5g: 3.8,
+            pl_d0: 40,
+            d0: 1,
+            heatmapGridSize: 50,
+        };
+
+        const elements = {
+            apsSlider: document.getElementById('aps'),
+            cellsSlider: document.getElementById('cells'),
+            usersSlider: document.getElementById('users'),
+            sinrWifiSlider: document.getElementById('sinr_threshold_wifi'),
+            sinr5gSlider: document.getElementById('sinr_threshold_5g'),
+            apsValue: document.getElementById('aps-value'),
+            cellsValue: document.getElementById('cells-value'),
+            usersValue: document.getElementById('users-value'),
+            sinrWifiValue: document.getElementById('sinr_threshold_wifi-value'),
+            sinr5gValue: document.getElementById('sinr_threshold_5g-value'),
+            wifiUserCount: document.getElementById('wifi-user-count'),
+            f5gUserCount: document.getElementById('5g-user-count'),
+            associationChartCtx: document.getElementById('userAssociationChart').getContext('2d'),
+            wifiHeatmapCanvas: document.getElementById('wifiHeatmap'),
+            f5gHeatmapCanvas: document.getElementById('5gHeatmap'),
+        };
+
+        let associationChart;
+
+        // --- Utility Functions (ported from utils.py) ---
+        function distanceMatrix(a, b) {
+            const aRows = a.length;
+            const bRows = b.length;
+            const distances = Array(aRows).fill(0).map(() => Array(bRows).fill(0));
+            for (let i = 0; i < aRows; i++) {
+                for (let j = 0; j < bRows; j++) {
+                    const dx = a[i][0] - b[j][0];
+                    const dy = a[i][1] - b[j][1];
+                    distances[i][j] = Math.sqrt(dx * dx + dy * dy);
+                }
+            }
+            return distances;
+        }
+
+        function calculateRssi(txPower, d, pathLossExp) {
+            if (d < config.d0) return txPower;
+            const pl = config.pl_d0 + 10 * pathLossExp * Math.log10(d / config.d0);
+            return txPower - pl;
+        }
+        
+        function calculateSinr(signalDbm, interferenceDbm, noiseDbm) {
+            const signalMw = 10**(signalDbm / 10);
+            const interferenceMw = 10**(interferenceDbm / 10);
+            const noiseMw = 10**(noiseDbm / 10);
+            const totalInterferenceNoiseMw = interferenceMw + noiseMw;
+            if (totalInterferenceNoiseMw === 0) return Infinity;
+            const sinrLinear = signalMw / totalInterferenceNoiseMw;
+            return 10 * Math.log10(sinrLinear);
+        }
+
+        // --- Main Simulation Logic ---
+        function runSimulation() {
+            // Get current values from sliders
+            const numAps = parseInt(elements.apsSlider.value);
+            const numCells = parseInt(elements.cellsSlider.value);
+            const numUsers = parseInt(elements.usersSlider.value);
+            const sinrThresholdWifi = parseInt(elements.sinrWifiSlider.value);
+            const sinrThreshold5g = parseInt(elements.sinr5gSlider.value);
+
+            // Update UI labels
+            elements.apsValue.textContent = numAps;
+            elements.cellsValue.textContent = numCells;
+            elements.usersValue.textContent = numUsers;
+            elements.sinrWifiValue.textContent = sinrThresholdWifi;
+            elements.sinr5gValue.textContent = sinrThreshold5g;
+
+            // Generate positions
+            Math.seedrandom('42'); // for reproducible "random" positions
+            const wifiAps = Array(numAps).fill(0).map(() => [Math.random() * config.areaSize[0], Math.random() * config.areaSize[1]]);
+            const g5Cells = Array(numCells).fill(0).map(() => [Math.random() * config.areaSize[0], Math.random() * config.areaSize[1]]);
+            const userPos = Array(numUsers).fill(0).map(() => [Math.random() * config.areaSize[0], Math.random() * config.areaSize[1]]);
+
+            // Calculate distances
+            const distWifi = distanceMatrix(userPos, wifiAps);
+            const dist5g = distanceMatrix(userPos, g5Cells);
+            
+            // Calculate RSSI
+            const rssiWifiAll = distWifi.map(row => row.map(d => calculateRssi(config.txPowerWifi, d, config.pathLossExpWifi)));
+            const rssi5gAll = dist5g.map(row => row.map(d => calculateRssi(config.txPower5g, d, config.pathLossExp5g)));
+
+            // Calculate SINR
+            const bestRssiWifi = rssiWifiAll.map(row => Math.max(...row));
+            const bestRssi5g = rssi5gAll.map(row => Math.max(...row));
+
+            const interferenceFrom5gToWifi = rssi5gAll.map(row => 10 * Math.log10(row.reduce((sum, val) => sum + 10**(val/10), 1e-12)));
+            const interferenceFromWifiTo5g = rssiWifiAll.map(row => 10 * Math.log10(row.reduce((sum, val) => sum + 10**(val/10), 1e-12)));
+
+            const sinrWifi = bestRssiWifi.map((signal, i) => calculateSinr(signal, interferenceFrom5gToWifi[i], config.noiseFloorWifi));
+            const sinr5g = bestRssi5g.map((signal, i) => calculateSinr(signal, interferenceFromWifiTo5g[i], config.noiseFloor5g));
+
+            // User Association Logic
+            const connectedTo = [];
+            for (let i = 0; i < numUsers; i++) {
+                const wifiIsGood = sinrWifi[i] >= sinrThresholdWifi;
+                const g5IsGood = sinr5g[i] >= sinrThreshold5g;
+                if (wifiIsGood && (sinrWifi[i] >= sinr5g[i] || !g5IsGood)) {
+                    connectedTo.push('Wi-Fi');
+                } else if (g5IsGood) {
+                    connectedTo.push('5G');
+                } else {
+                    connectedTo.push('5G'); // Fallback
+                }
+            }
+            
+            // Update summary
+            const wifiCount = connectedTo.filter(c => c === 'Wi-Fi').length;
+            const f5gCount = numUsers - wifiCount;
+            elements.wifiUserCount.textContent = wifiCount;
+            elements.f5gUserCount.textContent = f5gCount;
+
+            // Update visualizations
+            drawUserAssociationMap(userPos, wifiAps, g5Cells, connectedTo, sinrWifi, sinr5g);
+            
+            // Generate grid points for heatmaps
+            const gridSize = config.heatmapGridSize;
+            const gridPoints = [];
+            const stepX = config.areaSize[0] / gridSize;
+            const stepY = config.areaSize[1] / gridSize;
+            for(let i = 0; i < gridSize; i++) {
+                for(let j = 0; j < gridSize; j++) {
+                    gridPoints.push([j * stepX, i * stepY]);
+                }
+            }
+
+            const distGridWifi = distanceMatrix(gridPoints, wifiAps);
+            const distGrid5g = distanceMatrix(gridPoints, g5Cells);
+            const rssiGridWifiAll = distGridWifi.map(row => row.map(d => calculateRssi(config.txPowerWifi, d, config.pathLossExpWifi)));
+            const rssiGrid5gAll = distGrid5g.map(row => row.map(d => calculateRssi(config.txPower5g, d, config.pathLossExp5g)));
+            const bestRssiGridWifi = rssiGridWifiAll.map(row => Math.max(...row));
+            const bestRssiGrid5g = rssiGrid5gAll.map(row => Math.max(...row));
+            const intGridFrom5g = rssiGrid5gAll.map(row => 10 * Math.log10(row.reduce((sum, val) => sum + 10**(val/10), 1e-12)));
+            const intGridFromWifi = rssiGridWifiAll.map(row => 10 * Math.log10(row.reduce((sum, val) => sum + 10**(val/10), 1e-12)));
+            const sinrGridWifi = bestRssiGridWifi.map((s, i) => calculateSinr(s, intGridFrom5g[i], config.noiseFloorWifi));
+            const sinrGrid5g = bestRssiGrid5g.map((s, i) => calculateSinr(s, intGridFromWifi[i], config.noiseFloor5g));
+
+            drawSinrHeatmap(elements.wifiHeatmapCanvas, sinrGridWifi, 'Wi-Fi');
+            drawSinrHeatmap(elements.f5gHeatmapCanvas, sinrGrid5g, '5G');
+
+        }
+
+        // --- Visualization Functions ---
+        function drawUserAssociationMap(userPos, wifiAps, g5Cells, connectedTo, sinrWifi, sinr5g) {
+            const wifiUsers = userPos.filter((_, i) => connectedTo[i] === 'Wi-Fi').map((pos, i_orig) => ({x: pos[0], y: pos[1], sinrW: sinrWifi[i_orig], sinr5: sinr5g[i_orig]}));
+            const g5Users = userPos.filter((_, i) => connectedTo[i] === '5G').map((pos, i_orig) => ({x: pos[0], y: pos[1], sinrW: sinrWifi[i_orig], sinr5: sinr5g[i_orig]}));
+
+            if (associationChart) {
+                associationChart.destroy();
+            }
+            associationChart = new Chart(elements.associationChartCtx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Wi-Fi Users',
+                            data: wifiUsers,
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                            pointRadius: 5,
+                        },
+                        {
+                            label: '5G Users',
+                            data: g5Users,
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                             pointRadius: 5,
+                        },
+                         {
+                            label: 'Wi-Fi APs',
+                            data: wifiAps.map(p => ({x: p[0], y: p[1]})),
+                            backgroundColor: 'rgba(59, 130, 246, 1)',
+                            pointStyle: 'triangle',
+                            radius: 10,
+                        },
+                         {
+                            label: '5G Cells',
+                            data: g5Cells.map(p => ({x: p[0], y: p[1]})),
+                            backgroundColor: 'rgba(239, 68, 68, 1)',
+                            pointStyle: 'rect',
+                            radius: 8,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            min: 0,
+                            max: config.areaSize[0],
+                            title: { display: true, text: 'X (m)' }
+                        },
+                        y: {
+                            min: 0,
+                            max: config.areaSize[1],
+                            title: { display: true, text: 'Y (m)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const d = context.raw;
+                                    const label = context.dataset.label || '';
+                                    if (label.includes('User')) {
+                                         return `${label}: (${d.x.toFixed(1)}, ${d.y.toFixed(1)}) | Wi-Fi SINR: ${d.sinrW.toFixed(1)}dB | 5G SINR: ${d.sinr5.toFixed(1)}dB`;
+                                    }
+                                    return `${label}: (${d.x.toFixed(1)}, ${d.y.toFixed(1)})`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function drawSinrHeatmap(canvas, data, type) {
+            const ctx = canvas.getContext('2d');
+            const gridSize = Math.sqrt(data.length);
+            const cellWidth = canvas.width / gridSize;
+            const cellHeight = canvas.height / gridSize;
+
+            const minSINR = -10;
+            const maxSINR = 30;
+
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const sinr = data[i * gridSize + j];
+                    const normalized = Math.max(0, Math.min(1, (sinr - minSINR) / (maxSINR - minSINR)));
+                    
+                    let color;
+                    if (type === 'Wi-Fi') {
+                        // Blue scale
+                        const intensity = Math.floor(255 * (1 - normalized));
+                        color = `rgb(${intensity}, ${intensity}, 255)`;
+                    } else {
+                        // Red scale
+                        const intensity = Math.floor(255 * (1 - normalized));
+                        color = `rgb(255, ${intensity}, ${intensity})`;
+                    }
+                    ctx.fillStyle = color;
+                    ctx.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
+                }
+            }
+        }
+        
+        // --- Event Listeners ---
+        [elements.apsSlider, elements.cellsSlider, elements.usersSlider, elements.sinrWifiSlider, elements.sinr5gSlider].forEach(slider => {
+            slider.addEventListener('input', runSimulation);
+        });
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add a simple seedrandom implementation if not present
+            if (!Math.seedrandom) {
+                Math.seedrandom = function(seed) {
+                    let x = Math.sin(seed++) * 10000;
+                    Math.random = function() {
+                        x = Math.sin(seed++) * 10000;
+                        return x - Math.floor(x);
+                    };
+                };
+            }
+            runSimulation();
+        });
+
+    </script>
+</body>
+</html>
