@@ -15,8 +15,8 @@
     
     <!-- Placeholder comments as required -->
     <!-- Chosen Palette: Warm Neutrals (Slate, with Blue/Red accents) -->
-    <!-- Application Structure Plan: A single-page, narrative-scrolling application. Starts with an introduction to the concepts (RSSI vs. SINR), followed by a core interactive simulation section with user controls and dynamic visualizations (User Association Map, SINR Heatmaps). It then visually explains the user association logic, and concludes by connecting the simulation to the advanced Evo-WISVA concept. This structure was chosen to guide the user from basic understanding to hands-on exploration and finally to future potential, creating a more engaging and educational experience than a simple dashboard. -->
-    <!-- Visualization & Content Choices: [ User Association: Goal is to show relationships and distribution. Method is an interactive scatter plot using Chart.js on a Canvas, chosen for its performance and interactivity (tooltips). SINR Coverage: Goal is to compare spatial signal quality. Method is a custom-drawn heatmap on a Canvas element, chosen for its lightweight nature and full control over rendering, avoiding heavier libraries like Plotly. Association Logic: Goal is to organize and explain a process. Method is a flowchart-style diagram using styled HTML (divs with Tailwind), chosen for its simplicity and clarity. Evo-WISVA benefits: Goal is to inform. Method is a card-based layout, chosen for its scannable and visually organized presentation of key points. ] -->
+    <!-- Application Structure Plan: A single-page, narrative-scrolling application. Starts with an introduction to the concepts (RSSI vs. SINR), followed by a core interactive simulation section with user controls and dynamic visualizations (User Association Map, SINR Heatmaps). It then visually explains the user association logic, dives into the technical details of the simulation's underlying code, and concludes by connecting the simulation to the advanced Evo-WISVA concept. This structure was chosen to guide the user from basic understanding to hands-on exploration, then to technical comprehension, and finally to future potential, creating a more engaging and educational experience than a simple dashboard. -->
+    <!-- Visualization & Content Choices: [ User Association Map: Goal is to show relationships and distribution. Method is an interactive scatter plot using Chart.js on a Canvas, chosen for its performance and interactivity (tooltips displaying SINR details). SINR Coverage Heatmaps: Goal is to compare spatial signal quality. Method is a custom-drawn heatmap on a Canvas element, chosen for its lightweight nature, direct control over rendering, and visual clarity without relying on heavier, potentially SVG-based libraries. Association Logic: Goal is to organize and explain a process. Method is a flowchart-style diagram using styled HTML (divs with Tailwind classes), chosen for its simplicity, directness, and lack of external dependencies. Evo-WISVA benefits: Goal is to inform. Method is a card-based layout, chosen for its scannable and visually organized presentation of key points. ] -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <style>
@@ -27,14 +27,17 @@
         .chart-container {
             position: relative;
             width: 100%;
-            height: 50vh;
-            max-height: 500px;
+            height: 50vh; /* Responsive height */
+            max-height: 500px; /* Max height to prevent excessive size on large screens */
+            margin-left: auto; /* Center the chart container */
+            margin-right: auto; /* Center the chart container */
         }
         .heatmap-container {
              position: relative;
              width: 100%;
-             padding-bottom: 100%; /* 1:1 Aspect Ratio */
-             height: 0;
+             padding-bottom: 100%; /* 1:1 Aspect Ratio for square heatmaps */
+             height: 0; /* Important for padding-bottom trick */
+             overflow: hidden; /* Ensure content doesn't overflow */
         }
         .heatmap-canvas {
             position: absolute;
@@ -42,6 +45,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            display: block; /* Remove extra space below canvas */
         }
         .slider-label {
             display: flex;
@@ -91,44 +95,83 @@
         <section id="concepts" class="mb-16">
             <h2 class="text-2xl font-bold text-slate-800 mb-4 text-center">The Challenge: A Converged World</h2>
             <div class="max-w-4xl mx-auto text-center text-slate-600 space-y-4">
-                <p>In modern wireless environments, users are often within range of both Wi-Fi and cellular (5G) networks. To deliver the best experience, a device must intelligently choose which network to connect to. This decision isn't just about who has the "strongest" signal (RSSI), but who provides the best *quality* signal (SINR), which accounts for interference from other sources.</p>
-                <p>This interactive report simulates this complex environment, allowing you to explore the factors that influence user connectivity and network performance.</p>
+                <p>In modern wireless environments, users are increasingly within range of multiple network technologies, primarily **Wi-Fi** and **cellular (5G)**. For telecommunication providers like AT&T, the objective is to deliver a seamless, high-quality experience by intelligently managing how user devices connect to the best available network.</p>
+                <p>This decision is complex. It's not merely about which signal is "strongest" (measured by **RSSI - Received Signal Strength Indicator**), but rather which signal offers the best *quality* for data transmission. This quality is best represented by **SINR (Signal-to-Interference-plus-Noise Ratio)**, which accounts not only for the desired signal strength but also for unwanted interference from other devices and ambient noise.</p>
+                <p>This interactive planner simulates such a converged environment, allowing you to dynamically adjust key parameters and observe how users associate with Wi-Fi or 5G, providing insights into network planning, traffic steering, and coexistence strategies.</p>
             </div>
         </section>
         
         <!-- Section 2: The Interactive Simulation -->
         <section id="simulation" class="bg-white p-4 sm:p-8 rounded-2xl shadow-lg">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 text-center">Live Network Simulation & User Association</h2>
+            <p class="max-w-4xl mx-auto text-center text-slate-600 mb-8">Interact with the sliders below to dynamically change the network environment. Observe how the number of Wi-Fi Access Points (APs), 5G Cells, and user preferences influence which network users connect to, and how this impacts overall coverage.</p>
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Controls Panel -->
                 <aside class="lg:col-span-1 space-y-6">
-                    <h3 class="text-xl font-bold text-slate-800 border-b pb-2">Simulation Controls</h3>
+                    <h3 class="text-xl font-bold text-slate-800 border-b pb-2">Tunable Parameters</h3>
+                    <p class="text-sm text-slate-600 mb-4">Adjust these sliders to modify the simulation scenario in real-time:</p>
                     
                     <div>
-                        <label for="aps" class="slider-label"><span>Wi-Fi APs</span><span id="aps-value" class="font-semibold text-blue-600">4</span></label>
+                        <label for="aps" class="slider-label">
+                            <span>Wi-Fi Access Points (APs)</span>
+                            <span id="aps-value" class="font-semibold text-blue-600">4</span>
+                        </label>
                         <input type="range" id="aps" name="aps" min="1" max="10" value="4">
+                        <p class="text-xs text-slate-500 mt-1">Controls the density of Wi-Fi transmitters. More APs generally mean better Wi-Fi coverage and capacity.</p>
                     </div>
                     <div>
-                        <label for="cells" class="slider-label"><span>5G Cells</span><span id="cells-value" class="font-semibold text-red-600">2</span></label>
+                        <label for="cells" class="slider-label">
+                            <span>5G Cells</span>
+                            <span id="cells-value" class="font-semibold text-red-600">2</span>
+                        </label>
                         <input type="range" id="cells" name="cells" min="1" max="5" value="2">
+                        <p class="text-xs text-slate-500 mt-1">Determines the number of 5G base stations. Fewer cells typically cover larger areas but might have lower capacity density.</p>
                     </div>
                     <div>
-                        <label for="users" class="slider-label"><span>Number of Users</span><span id="users-value" class="font-semibold text-slate-600">50</span></label>
+                        <label for="users" class="slider-label">
+                            <span>Number of Users</span>
+                            <span id="users-value" class="font-semibold text-slate-600">50</span>
+                        </label>
                         <input type="range" id="users" name="users" min="10" max="200" value="50">
+                        <p class="text-xs text-slate-500 mt-1">Simulates the number of mobile devices in the area. Each user will attempt to connect to the optimal network.</p>
                     </div>
                     
-                    <h4 class="text-lg font-semibold text-slate-700 pt-4 border-t">Association Logic</h4>
+                    <h4 class="text-lg font-semibold text-slate-700 pt-4 border-t">User Association Logic Parameters</h4>
+                    <p class="text-sm text-slate-600 mb-4">These parameters define the minimum signal quality required for a "good" connection and influence the network selection strategy:</p>
                     <div>
-                        <label for="sinr_threshold_wifi" class="slider-label"><span>Min Wi-Fi SINR (dB)</span><span id="sinr_threshold_wifi-value" class="font-semibold text-blue-600">10</span></label>
+                        <label for="sinr_threshold_wifi" class="slider-label">
+                            <span>Minimum Wi-Fi SINR (dB)</span>
+                            <span id="sinr_threshold_wifi-value" class="font-semibold text-blue-600">10</span>
+                        </label>
                         <input type="range" id="sinr_threshold_wifi" name="sinr_threshold_wifi" min="0" max="20" value="10">
+                        <p class="text-xs text-slate-500 mt-1">The minimum SINR (Signal-to-Interference-plus-Noise Ratio) required for a Wi-Fi connection to be considered usable and reliable. Higher values demand better signal quality.</p>
                     </div>
                      <div>
-                        <label for="sinr_threshold_5g" class="slider-label"><span>Min 5G SINR (dB)</span><span id="sinr_threshold_5g-value" class="font-semibold text-red-600">5</span></label>
+                        <label for="sinr_threshold_5g" class="slider-label">
+                            <span>Minimum 5G SINR (dB)</span>
+                            <span id="sinr_threshold_5g-value" class="font-semibold text-red-600">5</span>
+                        </label>
                         <input type="range" id="sinr_threshold_5g" name="sinr_threshold_5g" min="0" max="20" value="5">
+                        <p class="text-xs text-slate-500 mt-1">The minimum SINR required for a 5G connection to be considered usable. This often reflects the more robust nature of cellular signals or different service requirements.</p>
                     </div>
+
+                    <h4 class="text-lg font-semibold text-slate-700 pt-4 border-t">Fixed Technical Parameters</h4>
+                    <p class="text-sm text-slate-600 mb-4">These parameters are fixed in this simulation for simplicity, but are critical in real-world network design:</p>
+                    <ul class="list-disc list-inside text-xs text-slate-600 space-y-1">
+                        <li>**Area Size:** 100m x 100m (the simulated environment).</li>
+                        <li>**Wi-Fi AP Transmit Power:** 20 dBm (typical for indoor Wi-Fi).</li>
+                        <li>**5G Cell Transmit Power:** 30 dBm (higher power to reflect broader cellular coverage).</li>
+                        <li>**Wi-Fi Noise Floor:** -95 dBm (ambient noise level affecting Wi-Fi performance).</li>
+                        <li>**5G Noise Floor:** -100 dBm (ambient noise level affecting 5G performance).</li>
+                        <li>**Wi-Fi Path Loss Exponent:** 3.5 (indicates how signal strength decreases with distance for Wi-Fi, typical for indoor 5 GHz).</li>
+                        <li>**5G Path Loss Exponent:** 3.8 (reflects signal decay for 5G, potentially higher for mmWave bands or denser urban environments).</li>
+                    </ul>
                 </aside>
 
                 <!-- Visualization Area -->
                 <div class="lg:col-span-2">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4 text-center">User Connection Summary</h3>
                     <div id="summary" class="flex justify-center gap-6 sm:gap-12 mb-6 text-center">
                         <div>
                             <p class="text-3xl font-bold text-blue-600" id="wifi-user-count">0</p>
@@ -139,6 +182,8 @@
                             <p class="text-sm text-slate-500">Users on 5G</p>
                         </div>
                     </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4 text-center">User Association Map</h3>
+                    <p class="text-sm text-slate-600 text-center mb-4">This map shows the spatial distribution of users and their assigned network. **Blue dots are Wi-Fi users, Red dots are 5G users.** Triangles represent Wi-Fi APs, and squares represent 5G Cells. Hover over a user to see their detailed SINR values for both networks.</p>
                     <div class="chart-container">
                         <canvas id="userAssociationChart"></canvas>
                     </div>
@@ -148,15 +193,16 @@
             <!-- SINR Heatmaps -->
             <div class="mt-12">
                 <h3 class="text-xl font-bold text-slate-800 text-center mb-4">SINR Coverage Heatmaps</h3>
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <p class="max-w-4xl mx-auto text-center text-slate-600 mb-8">These heatmaps visualize the Signal-to-Interference-plus-Noise Ratio (SINR) across the entire simulation area for both Wi-Fi and 5G. Brighter colors indicate higher SINR (better signal quality). This helps identify areas of strong coverage and potential dead zones or interference.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div class="text-center">
-                        <h4 class="font-semibold mb-2">Wi-Fi SINR</h4>
+                        <h4 class="font-semibold mb-2 text-blue-700">Wi-Fi SINR Coverage</h4>
                         <div class="heatmap-container mx-auto max-w-sm">
                             <canvas id="wifiHeatmap" class="heatmap-canvas rounded-lg shadow-md"></canvas>
                         </div>
                     </div>
                     <div class="text-center">
-                        <h4 class="font-semibold mb-2">5G SINR</h4>
+                        <h4 class="font-semibold mb-2 text-red-700">5G SINR Coverage</h4>
                         <div class="heatmap-container mx-auto max-w-sm">
                             <canvas id="5gHeatmap" class="heatmap-canvas rounded-lg shadow-md"></canvas>
                         </div>
@@ -167,57 +213,109 @@
 
         <!-- Section 3: User Association Logic Explained -->
         <section id="logic" class="my-16">
-            <h2 class="text-2xl font-bold text-slate-800 mb-6 text-center">How Do Users Choose a Network?</h2>
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 text-center">How Users Intelligently Choose a Network</h2>
+            <p class="max-w-4xl mx-auto text-center text-slate-600 mb-8">This simulation employs a simplified, yet illustrative, **Wi-Fi-preferred traffic steering logic**. This strategy is common in converged networks to offload traffic from cellular to Wi-Fi when Wi-Fi offers a good experience, optimizing cellular capacity for critical services.</p>
             <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
                 <!-- Step 1 -->
-                <div class="flex flex-col items-center text-center p-4">
+                <div class="flex flex-col items-center text-center p-4 bg-white rounded-lg shadow-sm">
                     <div class="bg-blue-100 text-blue-800 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mb-3">1</div>
-                    <h4 class="font-semibold mb-2">Check Wi-Fi Quality</h4>
-                    <p class="text-sm text-slate-600">Is the Wi-Fi SINR above its minimum threshold? If yes, it's a candidate for connection.</p>
+                    <h4 class="font-semibold mb-2">Evaluate Wi-Fi Quality</h4>
+                    <p class="text-sm text-slate-600">The user device first checks if the **Signal-to-Interference-plus-Noise Ratio (SINR)** from the best available Wi-Fi AP meets or exceeds the configured **Minimum Wi-Fi SINR Threshold**. If it does, Wi-Fi is considered a viable candidate.</p>
                 </div>
                 <!-- Arrow -->
                 <div class="hidden md:flex items-center justify-center h-full">
                     <span class="text-3xl text-slate-400">&rarr;</span>
                 </div>
                 <!-- Step 2 -->
-                <div class="flex flex-col items-center text-center p-4">
+                <div class="flex flex-col items-center text-center p-4 bg-white rounded-lg shadow-sm">
                     <div class="bg-slate-100 text-slate-800 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mb-3">2</div>
-                    <h4 class="font-semibold mb-2">Compare & Prefer</h4>
-                    <p class="text-sm text-slate-600">If Wi-Fi is good, is it also better than 5G? If so, the user connects to Wi-Fi. It's a "Wi-Fi First" strategy when quality is high.</p>
+                    <h4 class="font-semibold mb-2">Compare & Prioritize Wi-Fi</h4>
+                    <p class="text-sm text-slate-600">If Wi-Fi is deemed "good" (from Step 1), the device then compares its Wi-Fi SINR to its 5G SINR. If Wi-Fi's SINR is greater than or equal to 5G's SINR, OR if 5G's SINR is not "good" (below its threshold), the user **prefers and connects to Wi-Fi**. This is a "Wi-Fi First" strategy when quality is high.</p>
                 </div>
                 <!-- Arrow -->
                 <div class="hidden md:flex items-center justify-center h-full">
                      <span class="text-3xl text-slate-400">&rarr;</span>
                 </div>
                  <!-- Step 3 -->
-                <div class="flex flex-col items-center text-center p-4">
+                <div class="flex flex-col items-center text-center p-4 bg-white rounded-lg shadow-sm">
                     <div class="bg-red-100 text-red-800 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mb-3">3</div>
                     <h4 class="font-semibold mb-2">Fallback to 5G</h4>
-                    <p class="text-sm text-slate-600">If Wi-Fi isn't chosen, is the 5G signal quality above its threshold? If yes, connect to 5G. It acts as the reliable fallback.</p>
+                    <p class="text-sm text-slate-600">If the Wi-Fi preference logic (from Step 2) does not result in a Wi-Fi connection, the device then checks if the 5G SINR meets or exceeds the **Minimum 5G SINR Threshold**. If it does, the user connects to 5G. This ensures a reliable connection even when Wi-Fi is not optimal or preferred.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Behind the Scenes: The Simulation Engine -->
+        <section id="technical-details" class="my-16 bg-slate-50 p-8 sm:p-12 rounded-2xl shadow-inner">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 text-center">Behind the Scenes: The Simulation Engine</h2>
+            <p class="max-w-4xl mx-auto text-center text-slate-600 mb-8">This section explains the core JavaScript functions that power the simulation, mimicking real-world wireless physics and network behavior. All calculations are performed client-side in your browser.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h4 class="font-bold text-slate-900 mb-2">`distanceMatrix(a, b)`</h4>
+                    <p class="text-sm text-slate-600">
+                        This function calculates the **Euclidean distance** between every user and every Wi-Fi AP or 5G Cell. It takes two arrays of coordinates (e.g., `user_positions` and `ap_positions`) and returns a matrix where each cell represents the distance between a specific user and a specific access point. This is the foundational step for all signal strength calculations.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h4 class="font-bold text-slate-900 mb-2">`calculateRssi(txPower, distance, pathLossExp)`</h4>
+                    <p class="text-sm text-slate-600">
+                        This function computes the **Received Signal Strength Indicator (RSSI)** using a simplified **log-distance path loss model**. It takes the transmitter's power (`txPower`), the distance to the receiver (`distance`), and a `pathLossExp` (path loss exponent) which determines how rapidly the signal weakens over distance. The output is the signal strength in dBm at the receiver's location.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h4 class="font-bold text-slate-900 mb-2">`calculateSinr(signalDbm, interferenceDbm, noiseDbm)`</h4>
+                    <p class="text-sm text-slate-600">
+                        This is a crucial function for realistic wireless modeling. It calculates the **Signal-to-Interference-plus-Noise Ratio (SINR)**. It converts the input signal power, total interference power (from other Wi-Fi APs or 5G cells), and ambient noise floor from logarithmic dBm units to linear milliwatts (mW). It then sums the interference and noise, divides the signal power by this sum, and converts the result back to dB. SINR is a much better indicator of actual data throughput and link quality than RSSI alone.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h4 class="font-bold text-slate-900 mb-2">`runSimulation()`</h4>
+                    <p class="text-sm text-slate-600">
+                        This is the main orchestrator function. It's called every time a slider is adjusted. It performs the following steps:
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>Reads the current values from all user interface sliders.</li>
+                            <li>Randomly generates new positions for Wi-Fi APs, 5G Cells, and users (with a fixed seed for reproducibility).</li>
+                            <li>Calls `distanceMatrix`, `calculateRssi`, and `calculateSinr` for all users and potential connections.</li>
+                            <li>Applies the **user association logic** (explained above) to determine which network each user connects to.</li>
+                            <li>Updates the summary counts (users on Wi-Fi vs. 5G).</li>
+                            <li>Triggers the rendering of the **User Association Map** and **SINR Heatmaps** with the newly calculated data.</li>
+                        </ul>
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm md:col-span-2">
+                    <h4 class="font-bold text-slate-900 mb-2">Visualization Functions: `drawUserAssociationMap()` & `drawSinrHeatmap()`</h4>
+                    <p class="text-sm text-slate-600">
+                        These functions are responsible for rendering the visual output:
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>`drawUserAssociationMap()` uses **Chart.js** to create an interactive scatter plot. It plots user positions, color-coded by their assigned network, along with the Wi-Fi APs and 5G Cells. It's configured with custom tooltips to display detailed SINR values when you hover over a user, providing immediate insights into their connection decision.</li>
+                            <li>`drawSinrHeatmap()` draws the SINR heatmaps directly onto HTML `<canvas>` elements. It iterates through a grid of points, calculates the SINR at each point, and assigns a color (blue for Wi-Fi, red for 5G) based on the SINR value's intensity. This custom rendering provides a lightweight and efficient way to visualize signal coverage across the simulated area.</li>
+                        </ul>
+                    </p>
                 </div>
             </div>
         </section>
         
-        <!-- Section 4: Beyond the Simulation -->
+        <!-- Section 5: Beyond the Simulation -->
         <section id="future" class="bg-slate-100 rounded-2xl p-8 sm:p-12">
             <h2 class="text-2xl font-bold text-slate-800 mb-2 text-center">Beyond Simulation: The Evo-WISVA Advantage</h2>
-            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-8">This simulation uses a standard path loss model. My PhD research on the **Evo-WISVA framework** elevates this concept to a new level using AI, enabling truly predictive and proactive network management.</p>
+            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-8">This interactive simulation provides a foundational understanding of wireless coexistence using a simplified path loss model. My PhD research on the **Evo-WISVA framework** elevates this concept to a new level using advanced AI, enabling truly predictive and proactive network management for complex, dynamic environments like large sports arenas or industrial facilities.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h4 class="font-bold text-slate-900 mb-2">Physics-Informed AI</h4>
-                    <p class="text-sm text-slate-600">Models complex, real-world RF propagation, accounting for dynamic obstacles like moving crowds, not just distance.</p>
+                    <p class="text-sm text-slate-600">Evo-WISVA models complex, real-world RF propagation with high fidelity, accounting for dynamic obstacles like moving crowds or machinery, going beyond simple distance-based signal decay.</p>
                 </div>
                  <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h4 class="font-bold text-slate-900 mb-2">108x Faster Prediction</h4>
-                    <p class="text-sm text-slate-600">Achieves real-time SINR prediction, making proactive network adjustments feasible during live events.</p>
+                    <p class="text-sm text-slate-600">Achieves real-time SINR prediction, making proactive network adjustments feasible during live events where conditions change rapidly. This speed is critical for dynamic traffic steering and resource allocation.</p>
                 </div>
                  <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h4 class="font-bold text-slate-900 mb-2">Predictive Digital Twins</h4>
-                    <p class="text-sm text-slate-600">Creates a living model of the network that can forecast future conditions, not just analyze the present.</p>
+                    <p class="text-sm text-slate-600">Creates a living, neural model of the network that can not only analyze current conditions but also forecast future states, enabling predictive network design and automated reconfiguration.</p>
                 </div>
                  <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h4 class="font-bold text-slate-900 mb-2">AI-Driven Optimization</h4>
-                    <p class="text-sm text-slate-600">Moves beyond simple rules to intelligent, adaptive decision-making for maximizing network performance.</p>
+                    <p class="text-sm text-slate-600">Moves beyond simple rules or static planning to intelligent, adaptive decision-making, allowing the network to self-optimize for maximizing performance and user experience.</p>
                 </div>
             </div>
         </section>
@@ -231,19 +329,21 @@
     </footer>
 
     <script>
+        // Configuration object for simulation parameters
         const config = {
-            areaSize: [100, 100],
-            txPowerWifi: 20,
-            txPower5g: 30,
-            noiseFloorWifi: -95,
-            noiseFloor5g: -100,
-            pathLossExpWifi: 3.5,
-            pathLossExp5g: 3.8,
-            pl_d0: 40,
-            d0: 1,
-            heatmapGridSize: 50,
+            areaSize: [100, 100], // Defines the square simulation area in meters (X, Y)
+            txPowerWifi: 20,     // Fixed transmit power for Wi-Fi APs in dBm
+            txPower5g: 30,       // Fixed transmit power for 5G Cells in dBm
+            noiseFloorWifi: -95, // Fixed ambient noise floor for Wi-Fi in dBm
+            noiseFloor5g: -100,  // Fixed ambient noise floor for 5G in dBm
+            pathLossExpWifi: 3.5, // Fixed path loss exponent for Wi-Fi (e.g., typical for 5 GHz)
+            pathLossExp5g: 3.8,   // Fixed path loss exponent for 5G (e.g., higher for mmWave or complex environments)
+            pl_d0: 40,           // Path loss at reference distance d0 (in dB)
+            d0: 1,               // Reference distance for path loss model (in meters)
+            heatmapGridSize: 50, // Resolution of the grid used for generating heatmaps (e.g., 50x50 grid)
         };
 
+        // References to HTML elements for dynamic updates and event listeners
         const elements = {
             apsSlider: document.getElementById('aps'),
             cellsSlider: document.getElementById('cells'),
@@ -262,9 +362,16 @@
             f5gHeatmapCanvas: document.getElementById('5gHeatmap'),
         };
 
-        let associationChart;
+        let associationChart; // Variable to hold the Chart.js instance for the user association map
 
-        // --- Utility Functions (ported from utils.py) ---
+        // --- Utility Functions (Mimicking wireless physics calculations) ---
+
+        /**
+         * Calculates the Euclidean distance matrix between two sets of points.
+         * @param {Array<Array<number>>} a - First set of points (e.g., user positions).
+         * @param {Array<Array<number>>} b - Second set of points (e.g., AP/Cell positions).
+         * @returns {Array<Array<number>>} A 2D array where distances[i][j] is the distance between a[i] and b[j].
+         */
         function distanceMatrix(a, b) {
             const aRows = a.length;
             const bRows = b.length;
@@ -279,86 +386,130 @@
             return distances;
         }
 
+        /**
+         * Computes Received Signal Strength Indicator (RSSI) using a log-distance path loss model.
+         * @param {number} txPower - Transmit power in dBm.
+         * @param {number} d - Distance from transmitter to receiver in meters.
+         * @param {number} pathLossExp - Path loss exponent.
+         * @returns {number} RSSI value in dBm.
+         */
         function calculateRssi(txPower, d, pathLossExp) {
+            // If distance is less than reference distance d0, assume no path loss beyond d0's reference loss
             if (d < config.d0) return txPower;
+            // Log-distance path loss formula: PL = PL_d0 + 10 * n * log10(d / d0)
             const pl = config.pl_d0 + 10 * pathLossExp * Math.log10(d / config.d0);
+            // RSSI = Transmit Power - Path Loss
             return txPower - pl;
         }
         
+        /**
+         * Calculates Signal-to-Interference-plus-Noise Ratio (SINR) in dB.
+         * Converts powers from dBm to linear mW for summation, then back to dB.
+         * @param {number} signalDbm - Desired signal power in dBm.
+         * @param {number} interferenceDbm - Total interference power in dBm.
+         * @param {number} noiseDbm - Noise floor power in dBm.
+         * @returns {number} SINR in dB. Returns Infinity if total interference + noise is zero.
+         */
         function calculateSinr(signalDbm, interferenceDbm, noiseDbm) {
+            // Convert dBm to linear power (milliwatts)
             const signalMw = 10**(signalDbm / 10);
             const interferenceMw = 10**(interferenceDbm / 10);
             const noiseMw = 10**(noiseDbm / 10);
-            const totalInterferenceNoiseMw = interferenceMw + noiseMw;
-            if (totalInterferenceNoiseMw === 0) return Infinity;
+
+            // Sum interference and noise in linear scale
+            let totalInterferenceNoiseMw = interferenceMw + noiseMw;
+            
+            // Prevent division by zero or log(0) for extremely low I+N values
+            if (totalInterferenceNoiseMw <= 1e-12) { // Use a small epsilon to avoid floating point issues
+                totalInterferenceNoiseMw = 1e-12;
+            }
+
+            // Calculate SINR in linear scale: Signal / (Interference + Noise)
             const sinrLinear = signalMw / totalInterferenceNoiseMw;
+
+            // Convert SINR back to dB
             return 10 * Math.log10(sinrLinear);
         }
 
         // --- Main Simulation Logic ---
+        /**
+         * Orchestrates the entire simulation: reads parameters, performs calculations, and updates visualizations.
+         * This function is triggered whenever a slider value changes.
+         */
         function runSimulation() {
-            // Get current values from sliders
+            // 1. Read Tunable Parameters from UI Sliders
             const numAps = parseInt(elements.apsSlider.value);
             const numCells = parseInt(elements.cellsSlider.value);
             const numUsers = parseInt(elements.usersSlider.value);
             const sinrThresholdWifi = parseInt(elements.sinrWifiSlider.value);
             const sinrThreshold5g = parseInt(elements.sinr5gSlider.value);
 
-            // Update UI labels
+            // 2. Update UI Labels to reflect current slider values
             elements.apsValue.textContent = numAps;
             elements.cellsValue.textContent = numCells;
             elements.usersValue.textContent = numUsers;
             elements.sinrWifiValue.textContent = sinrThresholdWifi;
             elements.sinr5gValue.textContent = sinrThreshold5g;
 
-            // Generate positions
-            Math.seedrandom('42'); // for reproducible "random" positions
+            // 3. Generate Random Positions for APs, Cells, and Users
+            // Math.seedrandom('42') ensures that the "random" positions are the same each time
+            // the simulation runs with the same parameters, making results reproducible.
+            Math.seedrandom('42'); 
             const wifiAps = Array(numAps).fill(0).map(() => [Math.random() * config.areaSize[0], Math.random() * config.areaSize[1]]);
             const g5Cells = Array(numCells).fill(0).map(() => [Math.random() * config.areaSize[0], Math.random() * config.areaSize[1]]);
             const userPos = Array(numUsers).fill(0).map(() => [Math.random() * config.areaSize[0], Math.random() * config.areaSize[1]]);
 
-            // Calculate distances
+            // 4. Calculate Distances from each user to all APs/Cells
             const distWifi = distanceMatrix(userPos, wifiAps);
             const dist5g = distanceMatrix(userPos, g5Cells);
             
-            // Calculate RSSI
+            // 5. Calculate RSSI for all potential connections
             const rssiWifiAll = distWifi.map(row => row.map(d => calculateRssi(config.txPowerWifi, d, config.pathLossExpWifi)));
             const rssi5gAll = dist5g.map(row => row.map(d => calculateRssi(config.txPower5g, d, config.pathLossExp5g)));
 
-            // Calculate SINR
-            const bestRssiWifi = rssiWifiAll.map(row => Math.max(...row));
-            const bestRssi5g = rssi5gAll.map(row => Math.max(...row));
+            // 6. Calculate SINR for each user for both Wi-Fi and 5G
+            // This involves identifying the best signal and summing interference from the *other* technology.
+            const bestRssiWifi = rssiWifiAll.map(row => Math.max(...row)); // Best Wi-Fi signal for each user
+            const bestRssi5g = rssi5gAll.map(row => Math.max(...row));     // Best 5G signal for each user
 
+            // Calculate aggregated interference from 5G to Wi-Fi users (sum of linear powers from all 5G cells)
             const interferenceFrom5gToWifi = rssi5gAll.map(row => 10 * Math.log10(row.reduce((sum, val) => sum + 10**(val/10), 1e-12)));
+            // Calculate aggregated interference from Wi-Fi to 5G users (sum of linear powers from all Wi-Fi APs)
             const interferenceFromWifiTo5g = rssiWifiAll.map(row => 10 * Math.log10(row.reduce((sum, val) => sum + 10**(val/10), 1e-12)));
 
+            // Compute the final SINR for each user for both technologies
             const sinrWifi = bestRssiWifi.map((signal, i) => calculateSinr(signal, interferenceFrom5gToWifi[i], config.noiseFloorWifi));
             const sinr5g = bestRssi5g.map((signal, i) => calculateSinr(signal, interferenceFromWifiTo5g[i], config.noiseFloor5g));
 
-            // User Association Logic
-            const connectedTo = [];
+            // 7. Apply User Association Logic
+            const connectedTo = []; // Stores the assigned network for each user ('Wi-Fi' or '5G')
             for (let i = 0; i < numUsers; i++) {
-                const wifiIsGood = sinrWifi[i] >= sinrThresholdWifi;
-                const g5IsGood = sinr5g[i] >= sinrThreshold5g;
+                const wifiIsGood = sinrWifi[i] >= sinrThresholdWifi; // Check if Wi-Fi SINR meets its threshold
+                const g5IsGood = sinr5g[i] >= sinrThreshold5g;       // Check if 5G SINR meets its threshold
+
+                // Wi-Fi Preference Logic:
+                // Connect to Wi-Fi if it's 'good' AND (it's stronger than 5G OR 5G isn't 'good' enough)
                 if (wifiIsGood && (sinrWifi[i] >= sinr5g[i] || !g5IsGood)) {
                     connectedTo.push('Wi-Fi');
-                } else if (g5IsGood) {
+                } else if (g5IsGood) { // If Wi-Fi isn't chosen, try 5G if it's 'good'
                     connectedTo.push('5G');
-                } else {
-                    connectedTo.push('5G'); // Fallback
+                } else { // Fallback: If neither is 'good enough', default to 5G
+                    // In a real-world scenario, this might indicate a 'disconnected' state or a very poor connection.
+                    connectedTo.push('5G'); 
                 }
             }
             
-            // Update summary
+            // 8. Update User Count Summary in the UI
             const wifiCount = connectedTo.filter(c => c === 'Wi-Fi').length;
             const f5gCount = numUsers - wifiCount;
             elements.wifiUserCount.textContent = wifiCount;
             elements.f5gUserCount.textContent = f5gCount;
 
-            // Update visualizations
+            // 9. Update Visualizations
+            // Redraw the user association map based on new data
             drawUserAssociationMap(userPos, wifiAps, g5Cells, connectedTo, sinrWifi, sinr5g);
             
-            // Generate grid points for heatmaps
+            // Generate grid points for SINR heatmaps
             const gridSize = config.heatmapGridSize;
             const gridPoints = [];
             const stepX = config.areaSize[0] / gridSize;
@@ -369,6 +520,7 @@
                 }
             }
 
+            // Calculate RSSI and SINR for all grid points to generate heatmaps
             const distGridWifi = distanceMatrix(gridPoints, wifiAps);
             const distGrid5g = distanceMatrix(gridPoints, g5Cells);
             const rssiGridWifiAll = distGridWifi.map(row => row.map(d => calculateRssi(config.txPowerWifi, d, config.pathLossExpWifi)));
@@ -380,19 +532,32 @@
             const sinrGridWifi = bestRssiGridWifi.map((s, i) => calculateSinr(s, intGridFrom5g[i], config.noiseFloorWifi));
             const sinrGrid5g = bestRssiGrid5g.map((s, i) => calculateSinr(s, intGridFromWifi[i], config.noiseFloor5g));
 
+            // Draw the SINR heatmaps on their respective canvases
             drawSinrHeatmap(elements.wifiHeatmapCanvas, sinrGridWifi, 'Wi-Fi');
             drawSinrHeatmap(elements.f5gHeatmapCanvas, sinrGrid5g, '5G');
-
         }
 
         // --- Visualization Functions ---
+
+        /**
+         * Draws or updates the user association map using Chart.js.
+         * @param {Array<Array<number>>} userPos - Array of user coordinates.
+         * @param {Array<Array<number>>} wifiAps - Array of Wi-Fi AP coordinates.
+         * @param {Array<Array<number>>} g5Cells - Array of 5G Cell coordinates.
+         * @param {Array<string>} connectedTo - Array indicating which network each user is connected to.
+         * @param {Array<number>} sinrWifi - Array of Wi-Fi SINR values for each user.
+         * @param {Array<number>} sinr5g - Array of 5G SINR values for each user.
+         */
         function drawUserAssociationMap(userPos, wifiAps, g5Cells, connectedTo, sinrWifi, sinr5g) {
+            // Filter user positions based on their assigned network for Chart.js datasets
             const wifiUsers = userPos.filter((_, i) => connectedTo[i] === 'Wi-Fi').map((pos, i_orig) => ({x: pos[0], y: pos[1], sinrW: sinrWifi[i_orig], sinr5: sinr5g[i_orig]}));
             const g5Users = userPos.filter((_, i) => connectedTo[i] === '5G').map((pos, i_orig) => ({x: pos[0], y: pos[1], sinrW: sinrWifi[i_orig], sinr5: sinr5g[i_orig]}));
 
+            // Destroy previous chart instance to prevent memory leaks and redraw cleanly
             if (associationChart) {
                 associationChart.destroy();
             }
+            // Create a new Chart.js scatter plot
             associationChart = new Chart(elements.associationChartCtx, {
                 type: 'scatter',
                 data: {
@@ -400,34 +565,34 @@
                         {
                             label: 'Wi-Fi Users',
                             data: wifiUsers,
-                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)', // Blue for Wi-Fi
                             pointRadius: 5,
                         },
                         {
                             label: '5G Users',
                             data: g5Users,
-                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)', // Red for 5G
                              pointRadius: 5,
                         },
                          {
                             label: 'Wi-Fi APs',
                             data: wifiAps.map(p => ({x: p[0], y: p[1]})),
                             backgroundColor: 'rgba(59, 130, 246, 1)',
-                            pointStyle: 'triangle',
+                            pointStyle: 'triangle', // Triangle marker for APs
                             radius: 10,
                         },
                          {
                             label: '5G Cells',
                             data: g5Cells.map(p => ({x: p[0], y: p[1]})),
                             backgroundColor: 'rgba(239, 68, 68, 1)',
-                            pointStyle: 'rect',
+                            pointStyle: 'rect', // Square marker for 5G Cells
                             radius: 8,
                         }
                     ]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, // Chart resizes with its container
+                    maintainAspectRatio: false, // Allows chart to take container's height/width
                     scales: {
                         x: {
                             type: 'linear',
@@ -446,6 +611,7 @@
                         legend: { position: 'top' },
                         tooltip: {
                             callbacks: {
+                                // Custom tooltip to display user's SINR for both networks
                                 label: function(context) {
                                     const d = context.raw;
                                     const label = context.dataset.label || '';
@@ -461,28 +627,36 @@
             });
         }
 
+        /**
+         * Draws a SINR heatmap on a given canvas.
+         * @param {HTMLCanvasElement} canvas - The canvas element to draw on.
+         * @param {Array<number>} data - Flat array of SINR values for each grid point.
+         * @param {string} type - 'Wi-Fi' or '5G' to determine color scale.
+         */
         function drawSinrHeatmap(canvas, data, type) {
             const ctx = canvas.getContext('2d');
-            const gridSize = Math.sqrt(data.length);
+            const gridSize = Math.sqrt(data.length); // Assuming square grid
             const cellWidth = canvas.width / gridSize;
             const cellHeight = canvas.height / gridSize;
 
-            const minSINR = -10;
-            const maxSINR = 30;
+            const minSINR = -10; // Minimum SINR for color mapping
+            const maxSINR = 30;  // Maximum SINR for color mapping
 
+            // Loop through each grid cell and draw a colored rectangle
             for (let i = 0; i < gridSize; i++) {
                 for (let j = 0; j < gridSize; j++) {
                     const sinr = data[i * gridSize + j];
+                    // Normalize SINR value to a 0-1 range for color mapping
                     const normalized = Math.max(0, Math.min(1, (sinr - minSINR) / (maxSINR - minSINR)));
                     
                     let color;
                     if (type === 'Wi-Fi') {
-                        // Blue scale
-                        const intensity = Math.floor(255 * (1 - normalized));
+                        // Blue color scale: higher SINR = brighter blue
+                        const intensity = Math.floor(255 * (1 - normalized)); // Invert for lighter colors for better signal
                         color = `rgb(${intensity}, ${intensity}, 255)`;
                     } else {
-                        // Red scale
-                        const intensity = Math.floor(255 * (1 - normalized));
+                        // Red color scale: higher SINR = brighter red
+                        const intensity = Math.floor(255 * (1 - normalized)); // Invert for lighter colors for better signal
                         color = `rgb(255, ${intensity}, ${intensity})`;
                     }
                     ctx.fillStyle = color;
@@ -492,13 +666,16 @@
         }
         
         // --- Event Listeners ---
+        // Attach 'input' event listener to all slider elements to trigger simulation on change
         [elements.apsSlider, elements.cellsSlider, elements.usersSlider, elements.sinrWifiSlider, elements.sinr5gSlider].forEach(slider => {
             slider.addEventListener('input', runSimulation);
         });
 
         // --- Initial Load ---
+        // When the DOM is fully loaded, set up a simple random seed and run the simulation once
         document.addEventListener('DOMContentLoaded', () => {
-            // Add a simple seedrandom implementation if not present
+            // Simple pseudo-random number generator for reproducibility
+            // This ensures that APs, cells, and users are placed in the same spots each time the page loads
             if (!Math.seedrandom) {
                 Math.seedrandom = function(seed) {
                     let x = Math.sin(seed++) * 10000;
@@ -508,7 +685,7 @@
                     };
                 };
             }
-            runSimulation();
+            runSimulation(); // Run the simulation initially to populate the charts
         });
 
     </script>
