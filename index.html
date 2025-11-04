@@ -1,448 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rahul Gulia - Academic Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* Light blue-gray background */
-            color: #334155; /* Darker text */
-        }
-        .section-title {
-            position: relative;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            color: #1e3a8a; /* Dark blue for titles */
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 60px;
-            height: 3px;
-            background-color: #4f46e5; /* Indigo accent */
-            border-radius: 9999px;
-        }
-        .nav-link {
-            transition: color 0.3s ease;
-        }
-        .nav-link:hover {
-            color: #4f46e5; /* Indigo on hover */
-        }
-        .project-card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-        }
-        .icon {
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            fill: none;
-            width: 1em;
-            height: 1em;
-            display: inline-block;
-            vertical-align: middle;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dr. Rahul Gulia | Wireless AI Research & Innovation</title>
+
+  <!-- SEO & Metadata -->
+  <meta name="description" content="Academic Portfolio of Dr. Rahul Gulia – AI-driven wireless researcher specializing in 5G, IoT, and Edge Computing." />
+  <meta name="author" content="Rahul Gulia" />
+  <link rel="icon" href="assets/favicon.png" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Analytics (optional; replace G-XXXXXXX) -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXX');
+  </script>
+  -->
 </head>
-<body class="leading-relaxed">
 
-    <nav class="bg-white shadow-lg p-4 sticky top-0 z-50 rounded-b-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#hero" class="text-2xl font-bold text-gray-800">Rahul Gulia</a>
-            <div class="hidden md:flex space-x-6">
-                <a href="#about" class="nav-link text-gray-600 hover:text-indigo-600">About</a>
-                <a href="#research" class="nav-link text-gray-600 hover:text-indigo-600">Research</a>
-                <a href="#teaching" class="nav-link text-gray-600 hover:text-indigo-600">Teaching</a>
-                <a href="#service" class="nav-link text-gray-600 hover:text-indigo-600">Service</a>
-                <a href="#skills" class="nav-link text-gray-600 hover:text-indigo-600">Skills</a>
-                <a href="#contact" class="nav-link text-gray-600 hover:text-indigo-600">Contact</a>
-            </div>
-            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-indigo-600 focus:outline-none">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2 px-2 pb-3">
-            <a href="#about" class="block text-gray-600 hover:text-indigo-600 rounded-md p-2">About</a>
-            <a href="#research" class="block text-gray-600 hover:text-indigo-600 rounded-md p-2">Research</a>
-            <a href="#teaching" class="block text-gray-600 hover:text-indigo-600 rounded-md p-2">Teaching</a>
-            <a href="#service" class="block text-gray-600 hover:text-indigo-600 rounded-md p-2">Service</a>
-            <a href="#skills" class="block text-gray-600 hover:text-indigo-600 rounded-md p-2">Skills</a>
-            <a href="#contact" class="block text-gray-600 hover:text-indigo-600 rounded-md p-2">Contact</a>
-        </div>
-    </nav>
+<body class="bg-gray-50 text-gray-800 leading-relaxed">
+  <!-- Header / Hero -->
+  <header class="bg-indigo-700 text-white py-16 px-6 text-center">
+    <img src="assets/Profile_Pic.jpeg" alt="Rahul Gulia Profile Photo"
+         class="mx-auto rounded-full w-40 h-40 object-cover shadow-lg border-4 border-white mb-6" />
+    <h1 class="text-4xl font-bold mb-2">Dr. Rahul Gulia</h1>
+    <h2 class="text-xl font-light mb-4">Wireless AI Researcher | Educator | Innovator</h2>
 
-    <header id="hero" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-20 px-6 shadow-xl rounded-b-lg">
-        <div class="container mx-auto text-center">
-            <img src="https://placehold.co/150x150/ffffff/000000?text=Your+Photo" alt="Rahul Gulia" class="rounded-full w-36 h-36 mx-auto mb-6 border-4 border-white shadow-lg">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-                Rahul Gulia, Ph.D. Candidate
-            </h1>
-            <h2 class="text-2xl md:text-3xl font-semibold opacity-90 mb-4">
-                Wireless AI Researcher | Educator | Innovator
-            </h2>
-            <p class="text-lg md:text-xl max-w-3xl mx-auto opacity-90">
-                Dedicated Ph.D. Candidate with expertise in <strong>AI-driven wireless network optimization, 5G, mobile technologies, and edge computing</strong>. Proven ability in <strong>curriculum development, laboratory enhancement, and fostering student-led research</strong>. Committed to impactful scholarship and <strong>inclusive teaching practices</strong> for a diverse student body.
-            </p>
-            <div class="mt-8 space-x-4">
-                <a href="#research" class="bg-white text-indigo-700 hover:bg-gray-100 px-6 py-3 rounded-full font-semibold shadow-md transition-all duration-300">Explore Research</a>
-                <a href="#contact" class="border-2 border-white text-white hover:bg-white hover:text-indigo-700 px-6 py-3 rounded-full font-semibold shadow-md transition-all duration-300">Get in Touch</a>
-            </div>
-        </div>
-    </header>
+    <div class="flex justify-center space-x-4">
+      <a href="#contact" class="bg-white text-indigo-700 font-semibold px-6 py-3 rounded-full shadow-md hover:bg-indigo-100 transition">Get in Touch</a>
+      <a href="assets/Resume_RahulGulia.pdf" target="_blank" class="bg-indigo-900 text-white px-6 py-3 rounded-full font-semibold shadow-md hover:bg-indigo-800 transition">Download CV</a>
+    </div>
+  </header>
 
-    <main class="container mx-auto px-6 py-12">
+  <!-- About -->
+  <section id="about" class="py-16 px-6 max-w-5xl mx-auto">
+    <h3 class="text-3xl font-semibold text-indigo-700 mb-6">About Me</h3>
+    <p class="text-lg text-gray-700">
+      I am a passionate researcher and educator specializing in wireless communication, edge intelligence,
+      and generative AI for future networks. My work bridges physical-layer modeling with AI-driven optimization,
+      enabling real-time, resilient, and energy-efficient wireless systems for industrial and defense applications.
+    </p>
+  </section>
 
-        <section id="about" class="mb-16">
-            <h3 class="section-title text-3xl">About Me</h3>
-            <div class="bg-white p-8 rounded-lg shadow-md">
-                <p class="text-gray-700 mb-4">
-                    I am a passionate Ph.D. Candidate in Electrical & Computer Engineering at Rochester Institute of Technology, driven by a desire to push the boundaries of wireless communication through advanced AI and machine learning. My research focuses on optimizing complex 5G networks, especially within challenging industrial environments like automated warehouses, and exploring the frontiers of edge computing and mobile technologies. I am committed to developing innovative solutions that address real-world engineering challenges, transforming theoretical concepts into practical applications.
-                </p>
-                <p class="text-gray-700">
-                    Beyond my research, I am deeply invested in education and mentorship. My philosophy emphasizes active, hands-on learning that empowers students to become critical thinkers and innovators. I am particularly committed to creating inclusive and equitable learning environments that support students from all backgrounds, preparing them to excel in diverse professional landscapes. My aim is to contribute to a vibrant academic community through impactful research, inspiring teaching, and dedicated service.
-                </p>
-            </div>
-        </section>
+  <!-- Research -->
+  <section id="research" class="py-16 bg-white px-6 max-w-6xl mx-auto">
+    <h3 class="text-3xl font-semibold text-indigo-700 mb-10 text-center">Research Highlights</h3>
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h4 class="text-2xl font-semibold mb-4">Memory-Augmented Generative AI for Real-time Wireless Prediction in Dynamic Industrial Environments</h4>
+        <p class="text-gray-700 mb-4">
+          This project introduces a hybrid AI framework combining generative memory modules with predictive wireless modeling.
+          It enables real-time SINR and channel prediction in non-stationary, interference-rich environments — advancing
+          digital-twin-based industrial communication.
+        </p>
+        <ul class="list-disc ml-6 text-gray-700">
+          <li>Combines generative AI and memory augmentation for wireless prediction tasks.</li>
+          <li>Demonstrates fast convergence and robustness in industrial UWB/5G settings.</li>
+          <li>Potential applications in autonomous manufacturing and UAV networks.</li>
+        </ul>
+      </div>
 
-        <section id="research" class="mb-16">
-            <h3 class="section-title text-3xl">Research & Publications</h3>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-white p-8 rounded-lg shadow-md project-card">
-                    <h4 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-                        <i data-lucide="brain" class="icon mr-3 text-indigo-600"></i>AI-Driven Channel Modeling & Optimization
-                    </h4>
-                    <p class="text-gray-700 mb-4">
-                        My core research focuses on applying advanced AI techniques, particularly Variational Autoencoders (VAEs) and ConvLSTMs, to model and predict complex wireless channel characteristics in dynamic 5G environments. This work enables real-time optimization and resource allocation critical for next-generation networks.
-                    </p>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li><strong>Key Innovation:</strong> Developed the WISVA framework for 108x faster SINR heatmap prediction.</li>
-                        <li><strong>Techniques:</strong> Variational Autoencoders (VAEs), ConvLSTMs, Digital Signal Processing (DSP), Spatiotemporal AI.</li>
-                        <li><strong>Impact:</strong> Real-time network optimization, enhanced resource allocation, improved signal quality management.</li>
-                    </ul>
-                    <div class="mt-6">
-                        <div style="aspect-ratio: 16/9; width: 100%; height: 0; position: relative; overflow: hidden; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                            <iframe
-                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-                                src="https://www.youtube.com/embed/F6YEjx33s9s?autoplay=1&loop=1&playlist=F6YEjx33s9s&controls=0&mute=1"
-                                title="YouTube video player"
-                                frameborder="0"
-                                allow="autoplay; encrypted-media"
-                                allowfullscreen
-                            ></iframe>
-                        </div>
+      <!-- Research Video -->
+      <div class="rounded-xl overflow-hidden shadow-lg border border-gray-200">
+        <video autoplay loop muted playsinline class="w-full h-auto">
+          <source src="assets/Memory-Augmented Generative AI for Real-time Wireless Prediction in Dynamic Industrial Environments.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </section>
 
-                        <a href="https://github.com/RahulSinghGulia/YourWirelessAINetworkOptimizationRepo" target="_blank" class="text-indigo-600 hover:underline flex items-center mt-4">
-                            View Project on GitHub <i data-lucide="external-link" class="icon ml-2"></i>
-                        </a>
-                    </div>
-                </div>
+  <!-- Teaching -->
+  <section id="teaching" class="py-16 bg-gray-50 px-6 max-w-6xl mx-auto">
+    <h3 class="text-3xl font-semibold text-indigo-700 mb-6">Teaching & Mentorship</h3>
+    <p class="text-lg text-gray-700">
+      I have mentored undergraduate and graduate students in digital communications, MIMO systems, and machine learning for wireless networks.
+      My teaching philosophy focuses on research-driven learning, practical lab integration, and interdisciplinary collaboration.
+    </p>
+  </section>
 
-                <div class="bg-white p-8 rounded-lg shadow-md project-card">
-                    <h4 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-                        <i data-lucide="wifi" class="icon mr-3 text-green-600"></i>Physical (PHY) & MAC Layer Design
-                    </h4>
-                    <p class="text-gray-700 mb-4">
-                        My research extends to the fundamental design and optimization of wireless air interfaces, including advanced modulation, MIMO, and MAC protocols, crucial for robust mobile communication.
-                    </p>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li><strong>Key Innovation:</strong> Developed an end-to-end OFDM system simulation comparing FFT-OFDM and DWT-OFDM for robust transmission.</li>
-                        <li><strong>Techniques:</strong> OFDM, DWT, MIMO, Digital Modulation (BPSK to 256-QAM), Channel Estimation, CSMA/CA, Beamforming.</li>
-                        <li><strong>Impact:</strong> Improved spectral efficiency, enhanced interference suppression, optimized network throughput for mobile technologies.</li>
-                    </ul>
-                    <div class="mt-6">
-                        <img src="https://placehold.co/400x250/e2e8f0/64748b?text=OFDM+System+Simulation" alt="OFDM System" class="w-full h-auto rounded-lg shadow-sm mb-4">
-                        <a href="https://github.com/RahulSinghGulia/PHYSICAL_Layer/tree/main/OFDM" target="_blank" class="text-indigo-600 hover:underline flex items-center">
-                            View OFDM Project <i data-lucide="external-link" class="icon ml-2"></i>
-                        </a>
-                        <a href="https://github.com/RahulSinghGulia/Wireless_MindMaps/blob/main/OFDM_Model.pdf" target="_blank" class="text-indigo-600 hover:underline flex items-center mt-2">
-                            View OFDM Mindmap (PDF) <i data-lucide="download" class="icon ml-2"></i>
-                        </a>
-                        <a href="https://github.com/RahulSinghGulia/YourBeamformingRepo" target="_blank" class="text-indigo-600 hover:underline flex items-center mt-2">
-                            View Beamforming Project <i data-lucide="external-link" class="icon ml-2"></i>
-                        </a>
-                    </div>
-                </div>
+  <!-- Skills -->
+  <section id="skills" class="py-16 bg-white px-6 max-w-6xl mx-auto">
+    <h3 class="text-3xl font-semibold text-indigo-700 mb-8 text-center">Technical Skills</h3>
+    <div class="grid md:grid-cols-3 gap-6 text-gray-700">
+      <div class="p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition">
+        <h4 class="font-semibold mb-2">Wireless & Signal Processing</h4>
+        <p>5G/6G, Massive MIMO, Beamforming, Channel Modeling, UAV Networks</p>
+      </div>
+      <div class="p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition">
+        <h4 class="font-semibold mb-2">AI & Optimization</h4>
+        <p>Deep Learning, Reinforcement Learning, Generative AI, Edge Intelligence</p>
+      </div>
+      <div class="p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition">
+        <h4 class="font-semibold mb-2">Software Tools</h4>
+        <p>MATLAB, Python, PyTorch, TensorFlow, NS-3, VTK, C++, Git</p>
+      </div>
+    </div>
+  </section>
 
-                <div class="bg-white p-8 rounded-lg shadow-md project-card">
-                    <h4 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-                        <i data-lucide="cloud" class="icon mr-3 text-purple-600"></i>Edge Computing & IoT Connectivity
-                    </h4>
-                    <p class="text-gray-700 mb-4">
-                        Investigating how AI and advanced networking can enable efficient and reliable communication for IoT devices and applications at the network edge, critical for Industry 4.0.
-                    </p>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li><strong>Key Innovation:</strong> Developed stochastic Air-Ground channel models for UAVs to assess and optimize mobile connectivity.</li>
-                        <li><strong>Techniques:</strong> Digital Twin, ns-3 simulation, Reinforcement Learning for adaptive CW, Channel Modeling.</li>
-                        <li><strong>Impact:</strong> Enhanced reliability for industrial IoT, improved resource management in dense environments, support for UAV-specific 5G channels.</li>
-                    </ul>
-                    <div class="mt-6">
-                        <img src="https://placehold.co/400x250/e2e8f0/64748b?text=UAV+Channel+Modeling" alt="UAV Channel Modeling" class="w-full h-auto rounded-lg shadow-sm mb-4">
-                        <a href="https://www.proquest.com/docview/2444925347?pq-origsite=gscholar&fromopenview=true&sourcetype=Dissertations%20&%20Theses" target="_blank" class="text-indigo-600 hover:underline flex items-center">
-                            View M.S. Thesis (UAV/Path Loss Model) <i data-lucide="external-link" class="icon ml-2"></i>
-                        </a>
-                        <a href="https://github.com/RahulSinghGulia/MAC_Layer" target="_blank" class="text-indigo-600 hover:underline flex items-center mt-2">
-                            View Contention Window Project <i data-lucide="external-link" class="icon ml-2"></i>
-                        </a>
-                    </div>
-                </div>
+  <!-- Contact -->
+  <section id="contact" class="py-16 bg-indigo-700 text-white px-6 text-center">
+    <h3 class="text-3xl font-semibold mb-6">Get in Touch</h3>
+    <p class="max-w-2xl mx-auto mb-6">
+      I’m always open to research collaborations and industry partnerships that explore wireless AI and digital twin technologies.
+    </p>
+    <div class="space-x-6">
+      <a href="mailto:rahul.gulia@example.com" class="underline hover:text-indigo-200">rahul.gulia@example.com</a>
+      <a href="https://www.linkedin.com/in/rahulgulia" target="_blank" class="underline hover:text-indigo-200">LinkedIn</a>
+      <a href="https://github.com/rahulsinghgulia" target="_blank" class="underline hover:text-indigo-200">GitHub</a>
+    </div>
+  </section>
 
-                <div class="bg-white p-8 rounded-lg shadow-md project-card">
-                    <h4 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-                        <i data-lucide="lightbulb" class="icon mr-3 text-orange-600"></i>Research Vision & Future Directions
-                    </h4>
-                    <p class="text-gray-700 mb-4">
-                        My future research will focus on advancing AI-driven wireless autonomy, developing adaptive and resilient 5G/6G systems for complex, dynamic environments. I aim to explore self-organizing networks, AI for spectrum management, and secure edge-AI integration for critical infrastructure.
-                    </p>
-                    <p class="text-gray-700">
-                        I am committed to establishing a collaborative research program at SJSU that engages both undergraduate and graduate students, seeking external funding to address challenges in <strong>Software Quality, Mobile Technologies, and Edge Computing</strong> that directly benefit Silicon Valley industries.
-                    </p>
-                </div>
-            </div>
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-6 text-center text-sm">
+    © 2025 Rahul Gulia · All Rights Reserved
+  </footer>
 
-            <div class="mt-12 text-center">
-                <h4 class="text-2xl font-semibold text-gray-800 mb-6 section-title">Selected Publications</h4>
-                <div class="bg-white p-8 rounded-lg shadow-md text-left">
-                    <ul class="list-disc list-inside text-gray-700 space-y-3">
-                        <li>
-                            Rahul Gulia et al., "[Forthcoming] AI-based VAE model for Automated Warehouse 5G Infrastructure Modeling," <em>ACM Transactions on IoT</em>.
-                        </li>
-                        <li>
-                            Rahul Gulia et al., "Evaluation of 60 GHz Wireless Connectivity for an Automated Warehouse," <em>Information</em>, 2023.
-                        </li>
-                        <li>
-                            R. S. Gulia et al., "Evaluation of Wireless Connectivity in an Automated Warehouse at 60 GHz," <em>IEEE ICCE</em>, 2022.
-                        </li>
-                        <li>
-                            R. Gulia et al., "Automated Warehouse 5G Infrastructure Modeling Using VAEs," <em>ISNCC</em>, 2024.
-                        </li>
-                        <li>
-                            R. Gulia, "Path Loss Model for 2.4 GHz Indoor Wireless Networks With Application To Drones," M.S. Thesis, Rochester Institute of Technology, 2020.
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="teaching" class="mb-16">
-            <h3 class="section-title text-3xl">Teaching Philosophy & Experience</h3>
-            <div class="bg-white p-8 rounded-lg shadow-md">
-                <p class="text-gray-700 mb-4">
-                    My teaching philosophy emphasizes <strong>active engagement, collaborative problem-solving, and continuous learning</strong>. I believe in empowering students to become active creators and innovators, not just recipients of knowledge. This approach is informed by John Holt's wisdom that "Learning is the product of the activity of learners."
-                </p>
-                <h4 class="text-2xl font-semibold text-gray-800 mb-3 mt-6">Courses I Am Prepared to Teach:</h4>
-                <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
-                    <li><strong>Core CNSM:</strong> Introduction to Networks, Network Administration, Internet of Things (IoT), Cloud Computing, Database Management.</li>
-                    <li><strong>Specialized:</strong> Software Quality Management, Mobile Technologies, Edge Computing, Reinforcement Learning for Wireless Communications, Wireless Digital Twin Engineering, Advanced Wireless Systems (5G/6G).</li>
-                </ul>
-
-                <h4 class="text-2xl font-semibold text-gray-800 mb-3 mt-6">Pedagogical Approach & Lab Development:</h4>
-                <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
-                    <li><strong>Problem-Based Learning:</strong> Grounding theoretical concepts in real-world engineering challenges, drawing from my research in Industry 4.0 and 5G.</li>
-                    <li><strong>Hands-on Labs:</strong> Designing and developing practical laboratory exercises utilizing tools like <strong>ns-3, Python, MATLAB</strong>, and leveraging existing departmental infrastructure (e.g., CNSM's Cisco-sponsored labs) to reinforce concepts in <strong>network configuration, wireless signal analysis, and AI model deployment</strong>.</li>
-                    <li><strong>Inclusive Teaching:</strong> Employing varied assessment methods, fostering peer-to-peer learning, and adapting to diverse learning styles and backgrounds, inspired by my experience with <strong>underprivileged children through the Gubbachi organization</strong> and teaching high school physics/math through <strong>Vedantu</strong>.</li>
-                    <li><strong>Mentorship:</strong> Actively advising undergraduate capstone projects and guiding graduate research, encouraging students to pursue research and publication opportunities.</li>
-                    <li><strong>Digital Pedagogy:</strong> Adapting interactive whiteboard sessions and facilitating live, structured online learning during the COVID-19 pandemic, solidifying a belief in flexible and thoughtful digital instruction.</li>
-                </ul>
-                <a href="/path/to/your_teaching_statement.pdf" target="_blank" class="text-indigo-600 hover:underline flex items-center mt-4">
-                    Download Full Teaching Philosophy Statement <i data-lucide="download" class="icon ml-2"></i>
-                </a>
-            </div>
-        </section>
-
-        <section id="service" class="mb-16">
-            <h3 class="section-title text-3xl">Service Contributions</h3>
-            <div class="bg-white p-8 rounded-lg shadow-md">
-                <h4 class="text-2xl font-semibold text-gray-800 mb-3">Department & University Contributions:</h4>
-                <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
-                    <li><strong>Curriculum & Program Development:</strong> Eager to contribute to CNSM curriculum modernization and develop new specializations in <strong>AI-driven wireless systems, IoT, and edge computing</strong>.</li>
-                    <li><strong>Research Infrastructure:</strong> Active in building and enhancing cutting-edge research facilities, including <strong>AI-driven wireless testbeds</strong> and IoT labs.</li>
-                    <li><strong>Student Success & DEI:</strong> Committed to mentoring students from diverse backgrounds and participating in initiatives promoting <strong>diversity, equity, and inclusion</strong> within STEM fields at SJSU.</li>
-                    <li><strong>Shared Governance:</strong> Prepared to serve on departmental, college, and university committees (e.g., curriculum, admissions, faculty hiring, research strategy).</li>
-                    <li><strong>Research Showcase:</strong> Led team in showcasing innovative wireless AI research at Imagine RIT, demonstrating commitment to public engagement within the university.</li>
-                </ul>
-
-                <h4 class="text-2xl font-semibold text-gray-800 mb-3 mt-6">Professional & Discipline Service:</h4>
-                <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
-                    <li><strong>Technical Committee:</strong> Active member of <strong>IEEE Consumer Technology Society (CTSoc) – Consumer Communications Networks and Connectivity (CCN)</strong>, shaping technical agendas.</li>
-                    <li><strong>Peer Reviewer:</strong> Dedicated reviewer for <strong>IEEE Internet of Things Journal</strong>, <strong>IEEE ICCE-Taiwan (2025)</strong>, and committed to reviewing for other leading journals and conferences in wireless communications and AI/ML.</li>
-                    <li><strong>Conference Organization:</strong> Committed to organizing and chairing technical sessions and serving on Technical Program Committees (TPCs).</li>
-                    <li><strong>Standardization & Societies:</strong> Eager to contribute to standardization bodies (e.g., IEEE 802.11) and actively engage with professional societies like IEEE ComSoc and ACM SIGCOMM.</li>
-                </ul>
-
-                <h4 class="text-2xl font-semibold text-gray-800 mb-3 mt-6">Community & Public Engagement:</h4>
-                <ul class="list-disc list-inside text-gray-700 space-y-1">
-                    <li><strong>STEM Outreach:</strong> Participate in K-12 STEM outreach programs, drawing on experience teaching high school math/physics (Vedantu) to inspire diverse young audiences in engineering.</li>
-                    <li><strong>Industry Bridge-Building:</strong> Leverage industry collaborations (e.g., The Raymond Corporation) to establish partnerships for sponsored research and student internships at SJSU.</li>
-                    <li><strong>Public Understanding:</strong> Communicate the societal benefits of AI/wireless research (smart healthcare, resilient cities) through public lectures and accessible articles.</li>
-                </ul>
-                <a href="/path/to/your_service_statement.pdf" target="_blank" class="text-indigo-600 hover:underline flex items-center mt-4">
-                    Download Full Service Statement <i data-lucide="download" class="icon ml-2"></i>
-                </a>
-            </div>
-        </section>
-
-        <section id="skills" class="mb-16">
-            <h3 class="section-title text-3xl">Skills</h3>
-            <div class="bg-white p-8 rounded-lg shadow-md">
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div>
-                        <h4 class="text-xl font-semibold text-gray-800 mb-2">Teaching & Pedagogy:</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-0.5">
-                            <li>Curriculum Development</li>
-                            <li>Laboratory Design & Management</li>
-                            <li>Student Mentoring</li>
-                            <li>Inclusive Teaching Practices</li>
-                            <li>Assessment Design</li>
-                            <li>Digital Pedagogy</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold text-gray-800 mb-2">Core Engineering Technology:</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-0.5">
-                            <li>Software Quality Management</li>
-                            <li>Mobile Technologies</li>
-                            <li>Edge Computing</li>
-                            <li>Internet of Things (IoT)</li>
-                            <li>Cloud Computing</li>
-                            <li>Network Administration</li>
-                            <li>Database Management</li>
-                            <li>Industry 4.0</li>
-                            <li>Digital Twins</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold text-gray-800 mb-2">Wireless Communications:</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-0.5">
-                            <li>5G NR, LTE</li>
-                            <li>Air Interface Design</li>
-                            <li>Physical (PHY) Layer</li>
-                            <li>Medium Access Control (MAC) Layer</li>
-                            <li>Radio Resource Control (RRC)</li>
-                            <li>Channel Modeling</li>
-                            <li>Link Budget Analysis</li>
-                            <li>MIMO, Beamforming</li>
-                            <li>SDR (Software Defined Radio)</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold text-gray-800 mb-2">Signal Processing:</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-0.5">
-                            <li>Digital Signal Processing (DSP)</li>
-                            <li>Filter Design</li>
-                            <li>Clock Recovery</li>
-                            <li>Signal Detection</li>
-                            <li>Channel Estimation & Equalization</li>
-                            <li>Channel Coding</li>
-                            <li>OFDM, DWT-OFDM</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold text-gray-800 mb-2">AI/ML & Data Science:</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-0.5">
-                            <li>PyTorch, TensorFlow</li>
-                            <li>Variational Autoencoders (VAEs)</li>
-                            <li>Reinforcement Learning</li>
-                            <li>Deep Learning, Neural Networks</li>
-                            <li>Predictive Modeling</li>
-                            <li>Data Analysis</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold text-gray-800 mb-2">Tools & Platforms:</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-0.5">
-                            <li>ns-3, MATLAB</li>
-                            <li>Python (NumPy, SciPy, Matplotlib, PyWavelets, OpenCV)</li>
-                            <li>C/C++</li>
-                            <li>Git, Jupyter, Google Colab</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold text-gray-800 mb-2">Research & Grants:</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-0.5">
-                            <li>Grant Proposal Writing</li>
-                            <li>Scientific Writing</li>
-                            <li>Peer Review</li>
-                            <li>Project Management</li>
-                            <li>Data Visualization</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold text-gray-800 mb-2">Certifications:</h4>
-                        <ul class="list-disc list-inside text-gray-700 space-y-0.5">
-                            <li>IBM Deep Learning & Reinforcement Learning</li>
-                            <li>Generative Deep Learning with TensorFlow</li>
-                            <li>VAEs for Image Compression</li>
-                            <li>Neural Networks & Deep Learning</li>
-                            <li>5G Mobile Networks</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="mb-16 text-center">
-            <h3 class="section-title text-3xl mx-auto w-fit">Contact Me</h3>
-            <div class="bg-white p-8 rounded-lg shadow-md max-w-lg mx-auto">
-                <p class="text-gray-700 mb-4">I welcome inquiries regarding collaborations, research opportunities, or teaching positions. Feel free to reach out:</p>
-                <div class="space-y-3">
-                    <p class="flex items-center justify-center text-gray-700">
-                        <i data-lucide="phone" class="icon mr-3 text-indigo-600"></i> Phone: 585-410-7518
-                    </p>
-                    <p class="flex items-center justify-center text-gray-700">
-                        <i data-lucide="mail" class="icon mr-3 text-indigo-600"></i> Email: rg9828@rit.edu / rahulgulia92@gmail.com
-                    </p>
-                    <p class="flex items-center justify-center text-gray-700">
-                        <i data-lucide="globe" class="icon mr-3 text-indigo-600"></i> Website: <a href="https://learnwithpatience-wc.blogspot.com/" target="_blank" class="text-indigo-600 hover:underline">learnwithpatience-wc.blogspot.com</a>
-                    </p>
-                    <p class="flex items-center justify-center text-gray-700">
-                        <i data-lucide="linkedin" class="icon mr-3 text-indigo-600"></i> LinkedIn: <a href="https://www.linkedin.com/in/rahul-gulia-a9211a93" target="_blank" class="text-indigo-600 hover:underline">Rahul Gulia</a>
-                    </p>
-                    <p class="flex items-center justify-center text-gray-700">
-                        <i data-lucide="github" class="icon mr-3 text-indigo-600"></i> GitHub: <a href="https://github.com/RahulSinghGulia" target="_blank" class="text-indigo-600 hover:underline">RahulSinghGulia</a>
-                    </p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-gray-800 text-white py-6 text-center rounded-t-lg">
-        <div class="container mx-auto">
-            <p>&copy; 2025 Rahul Gulia. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script>
-        lucide.createIcons();
-
-        // JavaScript for mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when a link is clicked
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-    </script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>
