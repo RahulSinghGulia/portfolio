@@ -1,191 +1,166 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rahul Gulia - Research Portfolio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Academic Portfolio of Dr. Rahul Gulia – AI-driven wireless researcher specializing in 5G, IoT, UAV communications, and AI-assisted wireless prediction." />
+  <meta name="author" content="Rahul Gulia" />
+  <title>Dr. Rahul Gulia | Wireless AI Researcher</title>
+  <link rel="icon" href="assets/Profile_Pic.jpeg" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    html { scroll-behavior: smooth; }
-    .section-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; }
-    .project-card { border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem; background-color: #f9fafb; }
-    .project-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .project-card p { font-size: 0.95rem; line-height: 1.4rem; }
-    .button-primary { background-color: #1d4ed8; color: white; padding: 0.6rem 1.2rem; border-radius: 0.375rem; font-weight: 600; transition: all 0.2s; }
-    .button-primary:hover { background-color: #2563eb; }
-  </style>
 </head>
+
 <body class="bg-white text-gray-800 font-sans">
 
-<!-- NAVBAR -->
-
-<nav class="bg-white shadow sticky top-0 z-50">
-  <div class="container mx-auto flex justify-between items-center py-4 px-6">
-    <a href="#hero" class="text-xl font-bold text-blue-700">Rahul Gulia</a>
-    <div class="space-x-4">
-      <a href="#about" class="hover:text-blue-700">About</a>
-      <a href="#research" class="hover:text-blue-700">Research</a>
-      <a href="#projects" class="hover:text-blue-700">Projects</a>
-      <a href="#publications" class="hover:text-blue-700">Publications</a>
-      <a href="#experience" class="hover:text-blue-700">Experience</a>
-      <a href="#contact" class="hover:text-blue-700">Contact</a>
+  <!-- HEADER -->
+  <header class="bg-gradient-to-r from-indigo-700 to-blue-600 text-white py-12">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center px-6">
+      <img src="assets/Profile_Pic.jpeg" alt="Rahul Gulia" class="w-40 h-40 rounded-full border-4 border-white shadow-lg mb-6 md:mb-0 md:mr-10" />
+      <div>
+        <h1 class="text-4xl font-bold mb-2">Dr. Rahul Gulia</h1>
+        <h2 class="text-2xl mb-4">Wireless AI Researcher | Educator | Innovator</h2>
+        <p class="text-lg mb-6 max-w-2xl">
+          Specializing in intelligent wireless communication, signal processing, and networked sensing. 
+          My research blends classical communication theory with modern machine learning to create adaptive, efficient, and data-driven wireless systems.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#contact" class="bg-white text-indigo-700 font-semibold px-6 py-3 rounded-full shadow hover:bg-indigo-100 transition">Get in Touch</a>
+          <a href="Resume_RahulGulia.pdf" target="_blank" class="bg-indigo-700 text-white font-semibold px-6 py-3 rounded-full shadow hover:bg-indigo-800 transition">Download CV</a>
+        </div>
+      </div>
     </div>
-  </div>
-</nav>
+  </header>
 
-<!-- HERO SECTION -->
+  <!-- RESEARCH VIDEO -->
+  <section class="max-w-5xl mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold text-center mb-6 text-indigo-700">Research Video Spotlight</h2>
+    <video class="w-full rounded-2xl shadow-lg border border-gray-200" autoplay muted loop controls>
+      <source src="assets/Memory-Augmented Generative AI for Real-time Wireless Prediction in Dynamic Industrial Environments.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </section>
 
-<section id="hero" class="container mx-auto text-center py-20 px-6">
-  <img src="assets/Profile_Pic.jpeg" alt="Rahul Gulia" class="w-36 h-36 rounded-full mx-auto mb-6 shadow-lg">
-  <h1 class="text-4xl font-bold mb-4">Rahul Gulia, Ph.D.</h1>
-  <p class="text-lg text-gray-700 mb-6">Technical Leader | Wireless Communication & AI Research | 5G/6G | Advanced Wi-Fi | Digital Twins</p>
-  <a href="assets/Resume_RahulGulia.pdf" download class="button-primary">Download Resume</a>
-</section>
-
-<!-- ABOUT SECTION -->
-
-<section id="about" class="container mx-auto py-16 px-6">
-  <h2 class="section-title">About Me</h2>
-  <p class="text-gray-700 leading-relaxed mb-4">
-    Highly accomplished technical leader with 10+ years of equivalent experience (Ph.D.) in architecting, simulating, and optimizing Private 5G/6G and Advanced Wi-Fi (IEEE 802.11) solutions. Proven ability to lead design and delivery projects, apply AI for network automation, and mentor junior engineers. Deep functional expertise across the 3GPP protocol stack (PHY, MAC, RLC, RRC, PDCP).
-  </p>
-</section>
-
-<!-- RESEARCH & THESIS SECTION -->
-
-<section id="research" class="container mx-auto py-16 px-6">
-  <h2 class="section-title">Research & Thesis</h2>
-
-  <div class="project-card">
-    <h3>Indoor Wireless Communication for UAVs and IoT</h3>
-    <p>
-      Thesis work on accurate indoor path loss modeling for UAV, IoT, and cloud robotics. Proposed the UAV Low Altitude Air to Ground (U-LAAG) statistical path loss model, adapted from ITU-R, for 2.4–2.5 GHz ISM band. Validated via experiments in university premises, dwellings, and basements. Compared with ITU-R, Two-ray, and Log-distance models; U-LAAG closely matches measured results, enabling robust indoor network planning for UAVs and IoT deployments.
+  <!-- ABOUT -->
+  <section id="about" class="max-w-6xl mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold mb-6 text-indigo-700">About Me</h2>
+    <p class="text-lg leading-relaxed">
+      I am a researcher and educator with a Ph.D. in Wireless Communication, focusing on AI-augmented wireless systems, energy-efficient communication models, and smart network design. 
+      My work lies at the intersection of <strong>machine learning, wireless communication, and digital twin modeling</strong> — aiming to improve real-time prediction, adaptability, and reliability in modern communication systems.
     </p>
-  </div>
+  </section>
 
-  <div class="project-card">
-    <h3>MAC Layer Contention Window Project (CSMA/CA Simulation)</h3>
-    <p>
-      Python-based discrete-event simulation of CSMA/CA using simpy. Quantitatively analyzed the effect of RTS/CTS, network size, exponential backoff, and coverage area on throughput, collisions, latency, and channel efficiency. Features include: carrier sensing, DIFS/SIFS, random backoff, ACK handling, collision detection, and comprehensive performance visualization using matplotlib.
+  <!-- RESEARCH -->
+  <section id="research" class="bg-gray-50 py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-10 text-indigo-700">Research Highlights</h2>
+
+      <!-- Project 1 -->
+      <div class="mb-10">
+        <h3 class="text-2xl font-semibold text-gray-900 mb-2">1. CSMA/CA Contention Window Simulation (MAC Layer)</h3>
+        <p class="text-gray-700 text-lg leading-relaxed mb-4">
+          This project presents a Python-based discrete-event simulation of the <strong>CSMA/CA (Carrier Sense Multiple Access with Collision Avoidance)</strong> protocol, 
+          a fundamental MAC layer method used in wireless networks like Wi-Fi. Built using <code>simpy</code>, it models and analyzes network behavior under various configurations to study
+          the dynamics of <em>RTS/CTS handshakes</em>, <em>collision avoidance</em>, and <em>exponential backoff algorithms</em>.
+        </p>
+        <ul class="list-disc ml-6 text-gray-700 space-y-2">
+          <li>Simulates carrier sensing, DIFS/SIFS, ACKs, and collision handling with retransmission logic.</li>
+          <li>Evaluates the impact of <strong>RTS/CTS mechanisms</strong> and node density on throughput and latency.</li>
+          <li>Includes adjustable parameters such as coverage area, backoff limits, and timing windows.</li>
+          <li>Generates plots for <strong>Throughput vs. Nodes</strong>, <strong>Collisions vs. Nodes</strong>, and <strong>Efficiency vs. Backoff Limit</strong>.</li>
+        </ul>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="mb-10">
+        <h3 class="text-2xl font-semibold text-gray-900 mb-2">2. UAV Low Altitude Air-to-Ground (U-LAAG) Path Loss Model</h3>
+        <p class="text-gray-700 text-lg leading-relaxed mb-4">
+          My Ph.D. research introduced a <strong>non-deterministic statistical path loss model</strong> for indoor wireless communication in UAV, IoT, and cloud robotics applications. 
+          The proposed <strong>U-LAAG model</strong>, adapted from the ITU-R framework, accounts for low-altitude UAV operations within the 2.4–2.5 GHz ISM band.
+        </p>
+        <ul class="list-disc ml-6 text-gray-700 space-y-2">
+          <li>Addresses path loss variations due to materials, floor plans, and multipath scattering in indoor environments.</li>
+          <li>Validated through extensive experiments in university buildings, residential dwellings, and basements.</li>
+          <li>Compared against ITU-R, Two-Ray, and Log-Distance models — <strong>U-LAAG closely matched empirical drive test results</strong>.</li>
+          <li>Provides a basis for accurate indoor Wi-Fi and UAV network design for real-world deployments.</li>
+        </ul>
+      </div>
+
+      <!-- Project 3 -->
+      <div>
+        <h3 class="text-2xl font-semibold text-gray-900 mb-2">3. Memory-Augmented Generative AI for Real-Time Wireless Prediction</h3>
+        <p class="text-gray-700 text-lg leading-relaxed">
+          This ongoing work explores <strong>Generative AI architectures with embedded memory modules</strong> for real-time channel prediction in dynamic industrial wireless environments. 
+          The model leverages recurrent feedback mechanisms and spatiotemporal embeddings to predict SINR and interference patterns adaptively, enabling <strong>self-learning digital twins</strong> for wireless networks.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEACHING -->
+  <section id="teaching" class="max-w-6xl mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold mb-6 text-indigo-700">Teaching Philosophy</h2>
+    <p class="text-lg leading-relaxed mb-4">
+      I believe that engineering education must evolve from static lectures to <strong>hands-on, problem-driven exploration</strong>. 
+      My approach integrates hardware experimentation, software simulation, and AI-based analysis into the classroom to create meaningful learning experiences.
     </p>
-  </div>
-</section>
-
-<!-- PROJECTS SECTION -->
-
-<section id="projects" class="container mx-auto py-16 px-6">
-  <h2 class="section-title">Selected Projects</h2>
-
-  <div class="project-card">
-    <h3>Evo-WISVA: Dynamic Channel Digital Twin for Smart Warehouses</h3>
-    <p>
-      Developed AI/ML digital twin framework predicting wireless channel conditions in dynamic warehouse environments achieving MAE=0.329 dB. Secured industry funding from Toyota Raymond Corporation. Average prediction speed: 0.000496 seconds per frame.
-    </p>
-  </div>
-
-  <div class="project-card">
-    <h3>Stabilized Symbolic Regression for Interpretable BLER Modeling</h3>
-    <p>
-      Physics-informed symbolic regression framework discovering analytical expressions for V2X BLER. Used -ln(BLER) target transformation and aggressive genetic programming (20k population, 300 generations) to achieve R²=0.86 and MSE=2.08×10⁻² on unseen data.
-    </p>
-  </div>
-
-  <div class="project-card">
-    <h3>Interpretable Classification of Respiratory Patterns via Wi-Fi CSI</h3>
-    <p>
-      Developed feature-engineered pipeline using Analytic Signal Method (Hilbert Transform) on filtered CSI data. Created transparent geometric model achieving accuracy comparable to complex LSTM systems while ensuring full interpretability.
-    </p>
-  </div>
-
-  <div class="project-card">
-    <h3>MD-OFDM: Energy-Efficient & Low-PAPR MIMO-OFDM System</h3>
-    <p>
-      Achieved 5 dB PAPR reduction and 60% reduction in RF chain power consumption in simulations. Directly addresses PHY-layer energy efficiency challenges.
-    </p>
-  </div>
-</section>
-
-<!-- PUBLICATIONS SECTION -->
-
-<section id="publications" class="container mx-auto py-16 px-6">
-  <h2 class="section-title">Publications</h2>
-  <ul class="list-disc list-inside text-gray-700">
-    <li>R. Gulia et al., "Memory-Augmented Generative AI for Real-time Wireless Prediction in Dynamic Industrial Environments," IEEE Trans. on Communications (Under Review).</li>
-    <li>R. Gulia et al., "AI-Driven Radio Propagation Prediction in Automated Warehouses using Variational Autoencoders," Engineering Applications of AI, Elsevier (Under Review).</li>
-    <li>R. Gulia et al., "Evaluation of 60 GHz Wireless Connectivity for an Automated Warehouse," Information, 2023.</li>
-    <li>R. Gulia et al., "Automated Warehouse 5G Infrastructure Modeling Using VAEs," ISNCC, 2024.</li>
-  </ul>
-</section>
-
-<!-- EXPERIENCE SECTION -->
-
-<section id="experience" class="container mx-auto py-16 px-6">
-  <h2 class="section-title">Experience</h2>
-
-  <div class="project-card">
-    <h3>Research Assistant | RIT</h3>
-    <p>Sep 2020 – Present</p>
-    <ul class="list-disc list-inside text-gray-700">
-      <li>Accelerated network simulations by 108x; reduced prediction time from 37.9 hours to 21 minutes.</li>
-      <li>Pioneered physics-informed deep learning framework (WISVA) for accurate SINR heatmap prediction and wireless sensing.</li>
-      <li>Developed Evo-WISVA dynamic digital twin framework for real-time wireless channel modeling.</li>
-      <li>Implemented Symbolic Regression for interpretable BLER modeling in V2X systems.</li>
+    <h3 class="text-2xl font-semibold mb-2 text-gray-900">Courses Taught / Assisted</h3>
+    <ul class="list-disc ml-6 text-gray-700 space-y-2">
+      <li>Wireless Communication Systems</li>
+      <li>Machine Learning for Engineers</li>
+      <li>Digital Signal Processing</li>
+      <li>Embedded Systems and IoT</li>
     </ul>
-  </div>
+  </section>
 
-  <div class="project-card">
-    <h3>ns3 Wireless Intern | AIRA Technologies, Inc.</h3>
-    <p>Jun 2023 – Aug 2023</p>
-    <ul class="list-disc list-inside text-gray-700">
-      <li>Performed system-level performance analysis of Open RAN deployments using ns-3.</li>
-      <li>Enhanced rApp functionalities for improved network intelligence and scalability.</li>
-    </ul>
-  </div>
+  <!-- SERVICE -->
+  <section id="service" class="bg-gray-50 py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6 text-indigo-700">Professional Service</h2>
+      <ul class="list-disc ml-6 text-gray-700 space-y-2">
+        <li>Reviewer for IEEE Transactions on Wireless Communications and IEEE Access.</li>
+        <li>Session Chair, International Conference on 6G and Intelligent Networks (IC6GIN).</li>
+        <li>Mentor for undergraduate and graduate projects in AI-assisted wireless sensing.</li>
+      </ul>
+    </div>
+  </section>
 
-  <div class="project-card">
-    <h3>Teaching Assistant | RIT</h3>
-    <p>Aug 2019 – May 2020</p>
-    <ul class="list-disc list-inside text-gray-700">
-      <li>Assisted in EEEE 484 – Introduction to Communication Systems (~30 students).</li>
-      <li>Guided assignments, quizzes, and lab experiments to foster active learning.</li>
-    </ul>
-  </div>
-</section>
+  <!-- SKILLS -->
+  <section id="skills" class="max-w-6xl mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold mb-6 text-indigo-700">Technical Skills</h2>
+    <div class="grid md:grid-cols-2 gap-8 text-lg">
+      <ul class="list-disc ml-6 text-gray-700 space-y-2">
+        <li>Wireless System Simulation (MATLAB, ns-3, COMSOL)</li>
+        <li>Machine Learning (Python, TensorFlow, PyTorch)</li>
+        <li>Signal Processing for IoT / Edge Devices</li>
+        <li>Software Defined Radio (USRP, GNURadio)</li>
+      </ul>
+      <ul class="list-disc ml-6 text-gray-700 space-y-2">
+        <li>UAV Communication Modeling</li>
+        <li>AI for 5G/6G Networks</li>
+        <li>Embedded Hardware Design (Raspberry Pi, Arduino)</li>
+        <li>Digital Twin Development (Unity, VTK, Python)</li>
+      </ul>
+    </div>
+  </section>
 
-<!-- CERTIFICATIONS & SERVICE -->
+  <!-- CONTACT -->
+  <section id="contact" class="bg-gradient-to-r from-indigo-700 to-blue-600 text-white py-12">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-6">Get in Touch</h2>
+      <p class="text-lg mb-6">Interested in collaboration, research, or academic opportunities? Let’s connect.</p>
+      <a href="mailto:rahul.gulia@example.com" class="bg-white text-indigo-700 font-semibold px-6 py-3 rounded-full shadow hover:bg-indigo-100 transition">rahul.gulia@example.com</a>
+      <div class="mt-6 flex justify-center space-x-6">
+        <a href="https://github.com/rahulsinghgulia" target="_blank" aria-label="GitHub" class="hover:text-gray-200">GitHub</a>
+        <a href="https://scholar.google.com" target="_blank" aria-label="Google Scholar" class="hover:text-gray-200">Google Scholar</a>
+        <a href="https://www.linkedin.com/in/rahul-gulia" target="_blank" aria-label="LinkedIn" class="hover:text-gray-200">LinkedIn</a>
+      </div>
+    </div>
+  </section>
 
-<section id="services" class="container mx-auto py-16 px-6">
-  <h2 class="section-title">Certifications & Service</h2>
-  <ul class="list-disc list-inside text-gray-700">
-    <li>IBM Deep Learning & Reinforcement Learning (Coursera, May 2024)</li>
-    <li>Generative Deep Learning with TensorFlow (Coursera, Mar 2024)</li>
-    <li>VAEs for Image Compression (Coursera, Jan 2024)</li>
-    <li>Neural Networks & Deep Learning (Coursera, Aug 2022)</li>
-    <li>Active Technical Committee Member: IEEE CTSoc – Consumer Communications Networks and Connectivity (CCN)</li>
-    <li>Peer Reviewer: IEEE IoT Journal, IEEE ICCE-Taiwan (2025), and other conferences/journals</li>
-    <li>Research Showcase Leader at Imagine RIT: Creativity and Innovation Festival</li>
-  </ul>
-</section>
-
-<!-- CONTACT SECTION -->
-
-<section id="contact" class="container mx-auto py-16 px-6 text-center">
-  <h2 class="section-title">Contact Me</h2>
-  <p class="mb-6">Phone: 585-410-7518 | Email: <a href="mailto:rg9828@rit.edu" class="text-blue-700">rg9828@rit.edu</a></p>
-  <div class="flex justify-center space-x-6">
-    <a href="https://www.linkedin.com/in/rahul-gulia-a9211a93" target="_blank" class="text-blue-700 text-2xl"><i class="fab fa-linkedin"></i></a>
-    <a href="https://github.com/RahulSinghGulia" target="_blank" class="text-gray-800 text-2xl"><i class="fab fa-github"></i></a>
-    <a href="https://rahulsinghgulia.github.io/portfolio/#contact" target="_blank" class="text-blue-700 text-2xl"><i class="fas fa-envelope"></i></a>
-  </div>
-</section>
-
-<!-- FOOTER -->
-
-<footer class="bg-gray-100 py-6 mt-12 text-center text-gray-600 text-sm">
-  &copy; 2025 Rahul Gulia. All rights reserved.
-</footer>
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-gray-400 text-center py-6 text-sm">
+    © 2025 Dr. Rahul Gulia | Designed with Tailwind CSS
+  </footer>
 
 </body>
 </html>
